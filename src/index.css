@@ -11,3 +11,141 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+a {
+  text-decoration: none;
+}
+
+
+.main_container {
+  max-width: 75rem;
+  margin: 0 auto;
+}
+
+.search_bar input{
+  width: 60%;
+  padding: 3px 13px;
+  height: 35px;
+  margin-top: 1rem;
+  border-radius: 5px;
+  font-size: 18px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.header .logo {
+  width: 10rem;
+}
+
+.header .avatar {
+  width: 40px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+
+.header select {
+  margin: auto 15px;
+  margin-right: 24px;
+  border-radius: 5px;
+  height: 30px;
+  padding: 4px;
+}
+
+.header a {
+  color: #fff !important;
+  font-size: 19px;
+}
+
+.header .login {
+  border: 2px #e8f4da solid;
+  border-bottom: 4px #e8f4da solid;
+  border-radius: 9px;
+  font-size: 15px;
+  padding: 3px 10px;
+}
+
+.header h2 {
+  font-size: 36px;
+  line-height: 1;
+  width: 90%;
+  color: #fff;
+}
+
+.header h1 {
+  font-size: 3rem;
+  color: #FFF;
+  margin-top: 4rem;
+}
+
+.body {
+  padding: 3rem 0;
+  background-image: url('../public/img/bg_coris3.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.body h2 {
+  color: #000;
+  font-size: x-large;
+}
+
+.body .more {
+  text-align: center;
+}
+
+.body .more a {
+  font-size: large;
+}
+
+.latest_articles {
+  margin-top: 2rem;
+
+}
+
+.article {
+  color: #000 !important;
+  margin-bottom: 1rem;
+  border-radius: 7px;
+  background-color: #fdfbfb;
+}
+
+.article:hover {
+  padding: 10px;
+  background-color: #f3f9ec;
+}
+
+.article .article_cover {
+  width: 100%;
+  border-radius: 7px;
+}
+
+.article .article_details{
+  padding: 16px 11px;
+}
+
+.article .article_details h2{
+  font-size: large;
+  font-weight: 700;
+}
+
+.article .article_details h3{
+  margin-top: 10px;
+  text-align: justify;
+  margin-bottom: 11px;
+  font-size: medium;
+}
+
+.article .article_details h4{
+  font-size: medium;
+}
+
+.article .article_details h4 span{
+  font-size: large;
+  color: brown;
+  font-style: italic;
+}
