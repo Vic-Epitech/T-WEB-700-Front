@@ -4,6 +4,9 @@ import Home from './pages/Home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
+
+import Dashboard from './pages/dash/Dashboard';
+
 import './App.css'
 import './index.css'
 
@@ -12,7 +15,7 @@ function App() {
       
     <Routes>
     
-      {/* <Route path="/auth/login" element={<Login/>} /> */}
+      <Route path="/dash" element={<Dashboard/>} />
     
       <Route path="/auth/login" element={<Login/>} />
       <Route path="/auth/register" element={<Register/>} />
