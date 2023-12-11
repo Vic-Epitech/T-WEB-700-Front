@@ -30,7 +30,7 @@ function Header(){
             <div style={{ display: "flex" }}>
 
                 <a onClick={navigateToBlog} style={{ marginRight: "10px", paddingTop: "5px", cursor: "pointer"}}> Blog</a>
-                {/* <a href="/blog" style={{ marginRight: "10px", paddingTop: "5px" }}> Blog</a> */}
+                <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> dash</a>
 
                 <select>
                     <option value="someOption">XOF</option>
