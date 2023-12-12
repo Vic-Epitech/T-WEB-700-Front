@@ -18,6 +18,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { DashboardCustomize } from '@mui/icons-material';
+import { Money } from '@mui/icons-material';
+import { Settings } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
+
+import './dash.css';
+import { Newspaper } from '@mui/icons-material';
+import { VerifiedUserTwoTone } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -67,6 +75,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function Dashboard() {
+
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -77,6 +86,25 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const menuLinks = [
+    {
+        "title": "Dashboard",
+        "icon": "<DashboardCustomize />"
+    },
+    {
+        "title": "Cryptos",
+        "icon": "<Money />"
+    },
+    {
+        "title": "Configurations",
+        "icon": "<Settings />"
+    },
+    {
+        "title": "Profile",
+        "icon": "<Person />"
+    },
+  ]
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -93,7 +121,7 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+            Count Of Money
           </Typography>
         </Toolbar>
       </AppBar>
@@ -117,7 +145,72 @@ export default function Dashboard() {
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            <ListItem key={'Dashboard'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <DashboardCustomize />
+                </ListItemIcon>
+                <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> Dashboard </a>
+                {/* <ListItemText primary={'Dashboard'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Cryptos'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Money />
+                </ListItemIcon>
+                <a href="/dash/cryptos" style={{ marginRight: "10px", paddingTop: "5px" }}> Cryptos </a>
+                {/* <ListItemText primary={'Cryptos'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Articles'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Newspaper />
+                </ListItemIcon>
+                <a href="/dash/articles" style={{ marginRight: "10px", paddingTop: "5px" }}> Articles </a>
+                {/* <ListItemText primary={'Articles'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Users'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <VerifiedUserTwoTone />
+                </ListItemIcon>
+                <a href="/dash/users" style={{ marginRight: "10px", paddingTop: "5px" }}> Users </a>
+                {/* <ListItemText primary={'Users'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Configurations'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Settings />
+                </ListItemIcon>
+                <a href="/dash/settings" style={{ marginRight: "10px", paddingTop: "5px" }}> Configurations </a>
+                {/* <ListItemText primary={'Configurations'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem key={'Profile'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Person />
+                </ListItemIcon>
+                <a href="/dash/profile" style={{ marginRight: "10px", paddingTop: "5px" }}> Profile </a>
+                {/* <ListItemText primary={'Profile'} /> */}
+              </ListItemButton>
+            </ListItem>
+          {/* {menuLinks.map((text, index) => (
+            <ListItem key={text.title} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                  {text.icon}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
+            </ListItem>
+          ))} */}
+          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -126,20 +219,7 @@ export default function Dashboard() {
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          ))} */}
         </List>
       </Drawer>
       <Main open={open}>
