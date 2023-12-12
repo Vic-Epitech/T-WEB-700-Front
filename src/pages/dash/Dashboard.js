@@ -26,6 +26,7 @@ import { Person } from '@mui/icons-material';
 import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
+import { PowerOff } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -77,7 +78,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Dashboard() {
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -121,7 +122,10 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Count Of Money
+           <a href="/" className="menuLink">
+              <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
+           </a>
+            {/* Count Of Money */}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -139,7 +143,7 @@ export default function Dashboard() {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} color="inherit">
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
@@ -149,8 +153,8 @@ export default function Dashboard() {
               <ListItemButton>
                 <ListItemIcon>
                     <DashboardCustomize />
-                </ListItemIcon>
-                <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> Dashboard </a>
+                </ListItemIcon >
+                <a href="/dash" className="menuLink"> Dashboard </a>
                 {/* <ListItemText primary={'Dashboard'} /> */}
               </ListItemButton>
             </ListItem>
@@ -159,7 +163,7 @@ export default function Dashboard() {
                 <ListItemIcon>
                     <Money />
                 </ListItemIcon>
-                <a href="/dash/cryptos" style={{ marginRight: "10px", paddingTop: "5px" }}> Cryptos </a>
+                <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
                 {/* <ListItemText primary={'Cryptos'} /> */}
               </ListItemButton>
             </ListItem>
@@ -168,7 +172,7 @@ export default function Dashboard() {
                 <ListItemIcon>
                     <Newspaper />
                 </ListItemIcon>
-                <a href="/dash/articles" style={{ marginRight: "10px", paddingTop: "5px" }}> Articles </a>
+                <a href="/dash/articles" className="menuLink"> Articles </a>
                 {/* <ListItemText primary={'Articles'} /> */}
               </ListItemButton>
             </ListItem>
@@ -177,7 +181,7 @@ export default function Dashboard() {
                 <ListItemIcon>
                     <VerifiedUserTwoTone />
                 </ListItemIcon>
-                <a href="/dash/users" style={{ marginRight: "10px", paddingTop: "5px" }}> Users </a>
+                <a href="/dash/users" className="menuLink"> Users </a>
                 {/* <ListItemText primary={'Users'} /> */}
               </ListItemButton>
             </ListItem>
@@ -186,7 +190,7 @@ export default function Dashboard() {
                 <ListItemIcon>
                     <Settings />
                 </ListItemIcon>
-                <a href="/dash/settings" style={{ marginRight: "10px", paddingTop: "5px" }}> Configurations </a>
+                <a href="/dash/settings" className="menuLink"> Configurations </a>
                 {/* <ListItemText primary={'Configurations'} /> */}
               </ListItemButton>
             </ListItem>
@@ -196,30 +200,20 @@ export default function Dashboard() {
                 <ListItemIcon>
                     <Person />
                 </ListItemIcon>
-                <a href="/dash/profile" style={{ marginRight: "10px", paddingTop: "5px" }}> Profile </a>
+                <a href="/dash/profile" className="menuLink"> Profile </a>
                 {/* <ListItemText primary={'Profile'} /> */}
               </ListItemButton>
             </ListItem>
-          {/* {menuLinks.map((text, index) => (
-            <ListItem key={text.title} disablePadding>
-              <ListItemButton>
+            <Divider />
+            <ListItem key={'Déconexion'} disablePadding>
+              <ListItemButton style={{marginTop: "24em"}}>
                 <ListItemIcon>
-                  {text.icon}
+                    <PowerOff />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
+                {/* <ListItemText primary={'Profile'} /> */}
               </ListItemButton>
             </ListItem>
-          ))} */}
-          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))} */}
         </List>
       </Drawer>
       <Main open={open}>
