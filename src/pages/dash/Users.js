@@ -75,7 +75,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function Profile() {
+export default function Users() {
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -88,24 +88,6 @@ export default function Profile() {
     setOpen(false);
   };
 
-  const menuLinks = [
-    {
-        "title": "Dashboard",
-        "icon": "<DashboardCustomize />"
-    },
-    {
-        "title": "Cryptos",
-        "icon": "<Money />"
-    },
-    {
-        "title": "Configurations",
-        "icon": "<Settings />"
-    },
-    {
-        "title": "Profile",
-        "icon": "<Person />"
-    },
-  ]
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -219,7 +201,7 @@ export default function Profile() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Profile
+          Users
         </Typography>
       </Main>
     </Box>

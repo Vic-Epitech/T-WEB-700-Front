@@ -1,0 +1,12 @@
+.css-1f2xuhi-MuiDrawer-docked .MuiDrawer-paper {
+    width: 240px;
+    box-sizing: border-box;
+    background-color: #1e397c !important;
+    color: #fff;
+}
+
+.menuLink {
+    color: #fff;
+    margin-top: 5px;
+    margin-right: 10px;
+}

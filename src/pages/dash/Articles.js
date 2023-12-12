@@ -75,7 +75,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function Profile() {
+export default function Articles() {
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -219,7 +219,7 @@ export default function Profile() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Profile
+          Articles
         </Typography>
       </Main>
     </Box>

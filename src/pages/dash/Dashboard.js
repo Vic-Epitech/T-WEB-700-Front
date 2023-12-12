@@ -18,6 +18,15 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import { DashboardCustomize } from '@mui/icons-material';
+import { Money } from '@mui/icons-material';
+import { Settings } from '@mui/icons-material';
+import { Person } from '@mui/icons-material';
+
+import './dash.css';
+import { Newspaper } from '@mui/icons-material';
+import { VerifiedUserTwoTone } from '@mui/icons-material';
+import { PowerOff } from '@mui/icons-material';
 
 const drawerWidth = 240;
 
@@ -67,8 +76,9 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 }));
 
 export default function Dashboard() {
+
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -77,6 +87,25 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
+  const menuLinks = [
+    {
+        "title": "Dashboard",
+        "icon": "<DashboardCustomize />"
+    },
+    {
+        "title": "Cryptos",
+        "icon": "<Money />"
+    },
+    {
+        "title": "Configurations",
+        "icon": "<Settings />"
+    },
+    {
+        "title": "Profile",
+        "icon": "<Person />"
+    },
+  ]
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -93,7 +122,10 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Persistent drawer
+           <a href="/" className="menuLink">
+              <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
+           </a>
+            {/* Count Of Money */}
           </Typography>
         </Toolbar>
       </AppBar>
@@ -111,35 +143,77 @@ export default function Dashboard() {
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={handleDrawerClose} color="inherit">
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
         </DrawerHeader>
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={'Dashboard'} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
+                    <DashboardCustomize />
+                </ListItemIcon >
+                <a href="/dash" className="menuLink"> Dashboard </a>
+                {/* <ListItemText primary={'Dashboard'} /> */}
               </ListItemButton>
             </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            <ListItem key={'Cryptos'} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                    <Money />
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
+                {/* <ListItemText primary={'Cryptos'} /> */}
               </ListItemButton>
             </ListItem>
-          ))}
+            <ListItem key={'Articles'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Newspaper />
+                </ListItemIcon>
+                <a href="/dash/articles" className="menuLink"> Articles </a>
+                {/* <ListItemText primary={'Articles'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Users'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <VerifiedUserTwoTone />
+                </ListItemIcon>
+                <a href="/dash/users" className="menuLink"> Users </a>
+                {/* <ListItemText primary={'Users'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <ListItem key={'Configurations'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Settings />
+                </ListItemIcon>
+                <a href="/dash/settings" className="menuLink"> Configurations </a>
+                {/* <ListItemText primary={'Configurations'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem key={'Profile'} disablePadding>
+              <ListItemButton>
+                <ListItemIcon>
+                    <Person />
+                </ListItemIcon>
+                <a href="/dash/profile" className="menuLink"> Profile </a>
+                {/* <ListItemText primary={'Profile'} /> */}
+              </ListItemButton>
+            </ListItem>
+            <Divider />
+            <ListItem key={'Déconexion'} disablePadding>
+              <ListItemButton style={{marginTop: "24em"}}>
+                <ListItemIcon>
+                    <PowerOff />
+                </ListItemIcon>
+                <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
+                {/* <ListItemText primary={'Profile'} /> */}
+              </ListItemButton>
+            </ListItem>
         </List>
       </Drawer>
       <Main open={open}>

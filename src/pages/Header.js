@@ -15,6 +15,11 @@ function Header(){
     // location.assign('blog')
     };
   
+    const navigateToCrytpos = () => {
+      navigate('/cryptos');
+    // location.assign('blog')
+    };
+  
     const navigateToLogin = () => {
       navigate('/auth/login');
     };
@@ -30,6 +35,9 @@ function Header(){
             <div style={{ display: "flex" }}>
 
                 <a onClick={navigateToBlog} style={{ marginRight: "10px", paddingTop: "5px", cursor: "pointer"}}> Blog</a>
+
+                <a onClick={navigateToCrytpos} style={{ marginRight: "10px", paddingTop: "5px", cursor: "pointer"}}> Market</a>
+
                 <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> dash</a>
 
                 <select>
