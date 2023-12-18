@@ -11,3 +11,6 @@ export default function reduceText(text) {
       }
     }
 }
+
+export const corisXUserToken =  'coris-x-token';
+export const corisXUserDatas =  'coris-x-data';

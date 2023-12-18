@@ -101,6 +101,7 @@ a {
 
 .body .more a {
   font-size: large;
+  cursor: pointer;
 }
 
 .latest_articles {

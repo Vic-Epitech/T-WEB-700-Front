@@ -40,3 +40,8 @@
 header {
   background-color: #0c1b41 !important;
 }
+
+.text-center {
+  text-align: center;
+  margin: 4rem 1rem;
+}

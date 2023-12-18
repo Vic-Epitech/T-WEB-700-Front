@@ -1,23 +1,50 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import reduceText from "../utils/utils"
+import reduceText, { corisXUserDatas, corisXUserToken } from "../utils/utils"
 
 function Blog(){
 
     const [posts, setPosts] = useState([]);
+    let actualPage = 1;
+    let totalPosts = undefined;
+
+    let loader = useState(true);
 
     useEffect(() => {
        fetch('https://api-t-web.onrender.com/articles/articlesbypage?q=crypto&Numb=9')
           .then((response) => response.json())
           .then((data) => {
              console.log(data);
-             setPosts(data.data.page1);
+             totalPosts = data.data;
+             console.log(totalPosts);
+             setPosts(totalPosts['page' + actualPage]);
+             console.log(posts);
+
+             loader = false;
+             console.log(loader);
           })
           .catch((err) => {
              console.log(err.message);
           });
     }, []);
+  
+    const loadMoreArticles = () => {
+        setPosts(posts + totalPosts['page' + (actualPage + 1)]);
+        console.log(totalPosts.page2);
+
+    //   if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+        
+    //     setPosts(posts + totalPosts['page' + actualPage + 1]);
+
+    //   }
+    //   else {
+
+    //   }
+
+    };
 
     return (
         
@@ -72,12 +99,17 @@ function Blog(){
                                     );
                                 })}
 
+                                { loader
+                                  ? <h2 className="text-center" >Chargement....</h2>
+                                  : ''
+                                }
+
                             </div>
 
                         </div>
 
                         <h2 className="more">
-                            <a href="">Voir plus d'article</a>
+                            <a onClick={loadMoreArticles} >Voir plus d'article</a>
                         </h2>
 
                     </div>
