@@ -1,8 +1,24 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import reduceText from "../utils/utils"
 
 function Home(){
+
+    const [posts, setPosts] = useState([]);
+
+    useEffect(() => {
+       fetch('https://api-t-web.onrender.com/articles/articlesbypage?q=crypto&Numb=3')
+          .then((response) => response.json())
+          .then((data) => {
+             console.log(data);
+             setPosts(data.data.page1);
+          })
+          .catch((err) => {
+             console.log(err.message);
+          });
+    }, []);
+
     return (
         
         <>
@@ -47,72 +63,36 @@ function Home(){
 
                             <div className="row  gx-5">
 
-                                <a className="col-12 col-md-4" href="#">
+                                {posts.map((post) => {
+                                    return (
+                                        <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
 
-                                    <div className="article">
+                                            <div className="article">
 
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
+                                                <img className="article_cover" src={ post.urlToImage } alt="cover" />
 
-                                        <div className="article_details">
+                                                <div className="article_details">
 
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
+                                                    <h2>{ post.title }</h2>
 
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
+                                                    <h3>{ reduceText(post.description) }</h3>
 
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
+                                                    <h4>Publié le : <span>{ post.publishedAt }</span> </h4>
 
-                                        </div>
+                                                </div>
 
-                                    </div>
+                                            </div>
 
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
+                                        </a>
+                                    );
+                                })}
 
                             </div>
 
                         </div>
 
                         <h2 className="more">
-                            <a href="">Voir plus d'article</a>
+                            <a href="/blog">Voir plus d'article</a>
                         </h2>
 
                     </div>
