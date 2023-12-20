@@ -49,6 +49,11 @@
     border-bottom: 4px solid #b2c998;
   }
 
+  .error  {
+    text-align: center;
+    color: #ef3e0d;
+  }
+
   .auth_acts  {
     margin-top: 2rem;
   }

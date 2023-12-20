@@ -1,9 +1,57 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../Header";
 import './auth.css'
+import axios from "axios";
+import { baseUrl, corisXUserToken } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 function Login(){
+
+    const [email, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
+
+    const navigate = useNavigate();
+  
+    const navigateToDash = () => {
+      navigate('/dash');
+    };
+  
+    const handleLogin = async () => {
+
+        const log = {
+            "email": email,
+            "password": password
+        }
+
+          console.log(log)
+          try {
+            setLoading(true);
+            const response = await axios.post( baseUrl + 'api/auth/login', log);
+            console.log(response.data); // Handle successful login
+
+            if(response.data.data) {
+
+                // console.log('Success');
+                localStorage.setItem(corisXUserToken, response.data.data.token);
+
+                setTimeout(() => {
+                    navigateToDash();
+                }, 200);
+
+            }
+            else {
+                setError(true);
+            }
+
+          } catch (error) {
+            console.error('Login failed', error);
+          } finally {
+            setLoading(false);
+          }
+    };
 
     return (
         
@@ -45,14 +93,19 @@ function Login(){
                             <div className="form_login row gy-4">
 
                                 <div className="col-12">
-                                    <input type="email" className="" placeholder="Email"/>
+                                    <input type="email" className="" value={email} onChange={(e) => setUsername(e.target.value)} placeholder="Email"/>
                                 </div>
 
                                 <div className="col-12">
-                                    <input type="password" className="" placeholder="Mot de passe"/>
+                                    <input type="password" className="" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe"/>
                                 </div>
 
                                 <div className="col-12 row auth_acts">
+
+                                    { error
+                                    ? <h5 className="col-12 error" >Identifiants Invalid</h5>
+                                    : ''
+                                    }
 
                                     {/* <div>
                                     </div> */}
@@ -70,7 +123,7 @@ function Login(){
                             <div className="form_login row actions">
 
                                 <div className="col-6 action">
-                                    <input type="button" value="Se connecter"/>
+                                    <input onClick={handleLogin} type="button" value={loading ? 'Connexion...' : 'Se connecter'}/>
                                 </div>
 
                             </div>

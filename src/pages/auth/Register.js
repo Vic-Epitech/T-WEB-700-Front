@@ -1,9 +1,83 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useState } from "react";
 import Header from "../Header";
 import './auth.css'
+import { useNavigate } from "react-router-dom/dist";
+import axios from "axios";
+import { baseUrl, corisXUserToken } from "../../utils/utils";
 
 function Register(){
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [userName, setUserName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmpassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
+    const navigate = useNavigate();
+  
+    const navigateToDash = () => {
+      navigate('/auth/login');
+    };
+  
+    const checkEqual = (pass, confirmPass) => {
+      return pass === confirmPass;
+    };
+  
+    const handleRegister = async () => {
+
+        const log = {
+            "lastname": lastName,
+            "firstname": firstName,
+            "username": userName,
+            "email": email,
+            "password": password,
+            // "role": "admin",
+            // "articles": "aa",
+            // "cryptos": "aa"
+        }
+
+        console.log(log)
+
+        if (!checkEqual(password, confirmpassword)) {
+            setError(true);
+        }
+
+        else {
+
+            console.log('2' ,log)
+
+            try {
+              setLoading(true);
+              const response = await axios.post( baseUrl + 'api/auth/register', log);
+              console.log(response.data); // Handle successful login
+  
+              if(response.data.data) {
+  
+                  // console.log('Success');
+                //   localStorage.setItem(corisXUserToken, response.data.data.token);
+  
+                //   setTimeout(() => {
+                //       navigateToDash();
+                //   }, 200);
+  
+              }
+              else {
+                //   setError(true);
+              }
+  
+            } catch (error) {
+              console.error('Login failed', error);
+            } finally {
+              setLoading(false);
+            }
+
+        }
+
+    };
 
     return (
         
@@ -25,39 +99,27 @@ function Register(){
                             <div className="form_login row gy-4">
 
                                 <div className="col-6">
-                                    <input type="text" className="" placeholder="Prénom"/>
+                                    <input type="text" className=""  value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Prénom"/>
                                 </div>
 
                                 <div className="col-6">
-                                    <input type="text" className="" placeholder="Nom"/>
+                                    <input type="text" className=""  value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Nom"/>
                                 </div>
 
                                 <div className="col-12">
-                                    <input type="email" className="" placeholder="Email"/>
+                                    <input type="text" className=""  value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Username"/>
                                 </div>
 
-                                {/* <div className="col-6">
-                                    <input type="text" className="" placeholder="Email"/>
-                                </div>
-
-                                <div className="col-6">
-                                    <input type="text" className="" placeholder="Email"/>
+                                <div className="col-12">
+                                    <input type="email" className=""  value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email"/>
                                 </div>
 
                                 <div className="col-6">
-                                    <input type="text" className="" placeholder="Email"/>
+                                    <input type="password" className=""  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe"/>
                                 </div>
 
                                 <div className="col-6">
-                                    <input type="text" className="" placeholder="Email"/>
-                                </div> */}
-
-                                <div className="col-6">
-                                    <input type="password" className="" placeholder="Mot de passe"/>
-                                </div>
-
-                                <div className="col-6">
-                                    <input type="password" className="" placeholder="Confirmer Mot de passe"/>
+                                    <input type="password" className=""  value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirmer Mot de passe"/>
                                 </div>
 
                                 <div className="col-12 row auth_acts">
@@ -65,7 +127,6 @@ function Register(){
                                     {/* <div>
                                     </div> */}
                                         <a className="col-6" href="/auth/login">Vous avez déjà un compte ?</a>
-
                                     {/* <div>
                                     </h4> */}
                                 </div>
@@ -75,7 +136,7 @@ function Register(){
                             <div className="form_login row actions">
 
                                 <div className="col-6 action">
-                                    <input type="button" value="Valider"/>
+                                    <input onClick={handleRegister} type="button" value={loading ? 'Création de compte...' : 'Valider'}/>
                                 </div>
 
                             </div>

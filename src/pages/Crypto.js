@@ -1,8 +1,27 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "./Header";
 
 function Crypto(){
+
+    useEffect(() => {
+       fetch('https://api-t-web.onrender.com/cryptos/cryptosBypage?Numb=2&page=6')
+          .then((response) => response.json())
+          .then((data) => {
+             console.log(data);
+            //  totalPosts = data.data;
+            //  console.log(totalPosts);
+            //  setPosts(totalPosts['page' + actualPage]);
+            //  console.log(posts);
+
+            //  loader = false;
+            //  console.log(loader);
+          })
+          .catch((err) => {
+             console.log(err.message);
+          });
+    }, []);
+
     return (
         
         <>
