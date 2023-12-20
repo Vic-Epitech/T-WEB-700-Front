@@ -3,28 +3,30 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import reduceText, { corisXUserDatas, corisXUserToken } from "../utils/utils"
+import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from "../utils/utils"
 
 function Blog(){
 
     const [posts, setPosts] = useState([]);
-    let actualPage = 1;
     let totalPosts = undefined;
-
-    let loader = useState(true);
+    const [loader, setLoader] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-       fetch('https://api-t-web.onrender.com/articles/articlesbypage?q=crypto&Numb=9')
+
+       setLoader(true);
+
+       fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
           .then((response) => response.json())
           .then((data) => {
              console.log(data);
              totalPosts = data.data;
-             console.log(totalPosts);
-             setPosts(totalPosts['page' + actualPage]);
-             console.log(posts);
+             setPosts(totalPosts);
+            //  setPosts(totalPosts['page' + actualPage]);
+            //  console.log(posts);
 
-             loader = false;
-             console.log(loader);
+            setLoader(false);
+            //  console.log(loader);
           })
           .catch((err) => {
              console.log(err.message);
@@ -32,17 +34,45 @@ function Blog(){
     }, []);
   
     const loadMoreArticles = () => {
-        setPosts(posts + totalPosts['page' + (actualPage + 1)]);
-        console.log(totalPosts.page2);
-
-    //   if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
         
-    //     setPosts(posts + totalPosts['page' + actualPage + 1]);
+        setPage(page + 1);
+        
+        setLoader(true);
 
-    //   }
-    //   else {
+        fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(posts);
+            console.log(data.data);
+            console.log(posts.contat(data.data));
+             setPosts(posts.contat(data.data));
+             setLoader(false);
+          })
+          .catch((err) => {
+             console.log(err.message);
+          });
 
-    //   }
+      if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+        
+        setPage(page + 1);
+        
+        setLoader(true);
+
+        fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.data);
+             setPosts(posts.contat(data.data));
+             setLoader(false);
+          })
+          .catch((err) => {
+             console.log(err.message);
+          });
+
+      }
+      else {
+
+      }
 
     };
 
@@ -109,7 +139,12 @@ function Blog(){
                         </div>
 
                         <h2 className="more">
-                            <a onClick={loadMoreArticles} >Voir plus d'article</a>
+
+                            { !loader
+                            ? <a onClick={loadMoreArticles} >Voir plus d'article</a>
+                            : ''
+                            }
+                            
                         </h2>
 
                     </div>

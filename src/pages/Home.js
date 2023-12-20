@@ -1,18 +1,28 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import reduceText from "../utils/utils"
+import reduceText, { baseUrl } from "../utils/utils"
+
+function getArticles () {
+
+}
 
 function Home(){
 
     const [posts, setPosts] = useState([]);
+    const [loader, setLoader] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
-       fetch('https://api-t-web.onrender.com/articles/articlesbypage?q=crypto&Numb=3')
+
+       setLoader(true);
+
+       fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=3&page=' + page)
           .then((response) => response.json())
           .then((data) => {
              console.log(data);
-             setPosts(data.data.page1);
+             setPosts(data.data);
+             setLoader(false);
           })
           .catch((err) => {
              console.log(err.message);
@@ -87,12 +97,22 @@ function Home(){
                                     );
                                 })}
 
+                                { loader
+                                  ? <h2 className="text-center" >Chargement....</h2>
+                                  : ''
+                                }
+
                             </div>
 
                         </div>
 
                         <h2 className="more">
-                            <a href="/blog">Voir plus d'article</a>
+
+                            { !loader
+                            ? <a href="/blog">Voir plus d'article</a>
+                            : ''
+                            }
+                            
                         </h2>
 
                     </div>
