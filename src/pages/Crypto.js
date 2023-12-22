@@ -1,26 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import { baseUrl } from "../utils/utils";
+
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
 
 function Crypto(){
 
-    useEffect(() => {
-       fetch('https://api-t-web.onrender.com/cryptos/cryptosBypage?Numb=2&page=6')
-          .then((response) => response.json())
-          .then((data) => {
-             console.log(data);
-            //  totalPosts = data.data;
-            //  console.log(totalPosts);
-            //  setPosts(totalPosts['page' + actualPage]);
-            //  console.log(posts);
+    const [cryptos, setCryptos] = useState([]);
+    const [cryptoloader, setCryptoLoader] = useState(true);
 
-            //  loader = false;
-            //  console.log(loader);
-          })
-          .catch((err) => {
-             console.log(err.message);
-          });
-    }, []);
+    const [page, setPage] = useState(1);
+
+    fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
+    .then((response) => response.json())
+    .then((data) => {
+       console.log(data);
+       setCryptos(data.data);
+       setCryptoLoader(false);
+    })
+    .catch((err) => {
+       console.log(err.message);
+    });
 
     return (
         
@@ -58,15 +65,69 @@ function Crypto(){
 
             <div className="body">
 
-                    <div className="main_container">
+                <div className="main_container">
 
-                        <h2>Nos Cryptos</h2>
+                    <h2>Nos Cryptos</h2>
 
-                        <h2 className="more">
-                            <a href="">Voir plus de cryptos</a>
-                        </h2>
+                    <div className="latest_articles">
+                        
+                        <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left">#</TableCell>
+                                    <TableCell align="left">Nom</TableCell>
+                                    <TableCell align="right">Prix($)</TableCell>
+                                    <TableCell align="right">Min / Max (24h)</TableCell>
+                                    {/* <TableCell align="right">24h %</TableCell>
+                                    <TableCell align="right">7d %</TableCell> */}
+                                    <TableCell align="right">Cap du Marché</TableCell>
+                                    <TableCell align="right">Max d'approvisionnement</TableCell>
+                                    <TableCell align="right">Volume Total</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {cryptos.map((row) => (
+                                    <TableRow
+                                    key={row.name}
+                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                    >
+                                        <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
+                                        <TableCell align="left" scope="row">
+                                            <img className="coin_logo" src={row.image} alt="Logo" />
+                                            <span>{row.name} </span>
+                                            ( <span>{row.symbol }</span> )
+                                        </TableCell>
+                                        <TableCell align="right">${row.current_price}</TableCell>
+                                        <TableCell align="right">${row.low_24h} / ${row.high_24h}</TableCell>
+                                        {/* <TableCell align="right">{row.calories}</TableCell>
+                                        <TableCell align="right">{row.calories}</TableCell> */}
+                                        <TableCell align="right">{row.market_cap}</TableCell>
+                                        <TableCell align="right" scope="row">{row.max_supply}  ( <span>{row.symbol }</span> )</TableCell>
+                                        <TableCell align="right" scope="row">{row.total_volume} ( <span>{row.symbol }</span> )</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        </TableContainer>
+
+                        { cryptoloader
+                        ? <h2 className="text-center" >Chargement....</h2>
+                        : ''
+                        }
 
                     </div>
+
+                    <h2 className="more">
+
+                        { !cryptoloader
+                        ? <a href="/cryptos">Voir plus de crypto 🪙</a>
+                        : ''
+                        }
+                        
+                    </h2>
+
+                </div>
 
             </div>
         </>

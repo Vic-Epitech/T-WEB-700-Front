@@ -45,3 +45,17 @@ header {
   text-align: center;
   margin: 4rem 1rem;
 }
+
+thead tr th {
+  font-weight: 700 !important;
+}
+
+
+.table {
+  border: #e8f4da solid !important;
+}
+
+.coin_logo {
+  width: 35px;
+  margin-right: 8px;
+}

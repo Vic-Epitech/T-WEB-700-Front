@@ -15,6 +15,7 @@ export default function reduceText(text) {
 export const corisXUserToken =  'coris-x-token';
 export const corisXUserDatas =  'coris-x-data';
 
-export const baseUrl = 'https://api-t-web.onrender.com/'
+export const baseUrl = 'https://t-web-api.cyclic.app/'
+// export const baseUrl = 'https://api-t-web.onrender.com/'
 
 
