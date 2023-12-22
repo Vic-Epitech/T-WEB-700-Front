@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import { baseUrl } from "../utils/utils";
+import { baseUrl, capitalize } from "../utils/utils";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -96,15 +96,15 @@ function Crypto(){
                                         <TableCell align="left" scope="row">
                                             <img className="coin_logo" src={row.image} alt="Logo" />
                                             <span>{row.name} </span>
-                                            ( <span>{row.symbol }</span> )
+                                            ( <span>{capitalize(row.symbol) }</span> )
                                         </TableCell>
                                         <TableCell align="right">${row.current_price}</TableCell>
                                         <TableCell align="right">${row.low_24h} / ${row.high_24h}</TableCell>
                                         {/* <TableCell align="right">{row.calories}</TableCell>
                                         <TableCell align="right">{row.calories}</TableCell> */}
                                         <TableCell align="right">{row.market_cap}</TableCell>
-                                        <TableCell align="right" scope="row">{row.max_supply}  ( <span>{row.symbol }</span> )</TableCell>
-                                        <TableCell align="right" scope="row">{row.total_volume} ( <span>{row.symbol }</span> )</TableCell>
+                                        <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                        <TableCell align="right" scope="row">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

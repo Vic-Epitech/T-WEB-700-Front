@@ -12,6 +12,10 @@ export default function reduceText(text) {
     }
 }
 
+export function capitalize(str){
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 export const corisXUserToken =  'coris-x-token';
 export const corisXUserDatas =  'coris-x-data';
 
