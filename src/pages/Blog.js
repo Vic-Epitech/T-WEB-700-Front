@@ -107,7 +107,7 @@ function Blog(){
 
                                 {posts.map((post) => {
                                     return (
-                                        <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
+                                        <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank" rel="noreferrer">
 
                                             <div className="article">
 

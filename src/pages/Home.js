@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
@@ -11,9 +12,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-function getArticles () {
+// function getArticles () {
 
-}
+// }
 
 function Home(){
 
@@ -23,7 +24,7 @@ function Home(){
     const [cryptos, setCryptos] = useState([]);
     const [cryptoloader, setCryptoLoader] = useState(true);
 
-    const [page, setPage] = useState(1);
+    const [page] = useState(1);
 
     useEffect(() => {
 

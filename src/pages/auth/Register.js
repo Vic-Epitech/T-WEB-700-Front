@@ -4,7 +4,7 @@ import Header from "../Header";
 import './auth.css'
 import { useNavigate } from "react-router-dom/dist";
 import axios from "axios";
-import { baseUrl, corisXUserToken } from "../../utils/utils";
+import { baseUrl } from "../../utils/utils";
 
 function Register(){
 
@@ -15,7 +15,7 @@ function Register(){
     const [password, setPassword] = useState("");
     const [confirmpassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+    const [ setError] = useState('');
 
     const navigate = useNavigate();
   

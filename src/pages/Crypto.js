@@ -16,7 +16,7 @@ function Crypto(){
     const [cryptos, setCryptos] = useState([]);
     const [cryptoloader, setCryptoLoader] = useState(true);
 
-    const [page, setPage] = useState(1);
+    const [page] = useState(1);
 
     fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
     .then((response) => response.json())

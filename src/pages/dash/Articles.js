@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -94,25 +95,6 @@ export default function Articles() {
     location.reload();
   };
 
-
-  const menuLinks = [
-    {
-        "title": "Dashboard",
-        "icon": "<DashboardCustomize />"
-    },
-    {
-        "title": "Cryptos",
-        "icon": "<Money />"
-    },
-    {
-        "title": "Configurations",
-        "icon": "<Settings />"
-    },
-    {
-        "title": "Profile",
-        "icon": "<Person />"
-    },
-  ]
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const [posts, setPosts] = useState([]);

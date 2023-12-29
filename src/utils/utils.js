@@ -6,7 +6,6 @@ export default function reduceText(text) {
         return text;
       } else {
         let t = r.splice(0, 400);
-
         return t.join('') + ' ...';
       }
     }
@@ -21,5 +20,3 @@ export const corisXUserDatas =  'coris-x-data';
 
 export const baseUrl = 'https://t-web-api.cyclic.app/'
 // export const baseUrl = 'https://api-t-web.onrender.com/'
-
-

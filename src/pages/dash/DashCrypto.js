@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -88,30 +89,11 @@ export default function Cryptos() {
     setOpen(false);
   };
 
-  const menuLinks = [
-    {
-        "title": "Dashboard",
-        "icon": "<DashboardCustomize />"
-    },
-    {
-        "title": "Cryptos",
-        "icon": "<Money />"
-    },
-    {
-        "title": "Configurations",
-        "icon": "<Settings />"
-    },
-    {
-        "title": "Profile",
-        "icon": "<Person />"
-    },
-  ]
-
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const [cryptos, setCryptos] = useState([]);
   const [cryptoloader, setCryptoLoader] = useState(true);
 
-  const [page, setPage] = useState(1);
+  const [page] = useState(1);
 
   const logout = () => {
     localStorage.removeItem(corisXUserDatas)

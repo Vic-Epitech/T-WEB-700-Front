@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -89,10 +91,10 @@ export default function Users() {
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const token = localStorage.getItem(corisXUserToken)
-  const [posts, setPosts] = useState([]);
-  let totalPosts = undefined;
-  const [loader, setLoader] = useState(true);
-  const [page, setPage] = useState(1);
+  // const [posts, setPosts] = useState([]);
+  // let totalPosts = undefined;
+  // const [loader, setLoader] = useState(true);
+  // const [page, setPage] = useState(1);
 
   const logout = () => {
     localStorage.removeItem(corisXUserDatas)
@@ -107,7 +109,7 @@ export default function Users() {
       Navigate('/');
     }
 
-     setLoader(true);
+    //  setLoader(true);
      let config = {
        headers: {
          'Authorization': 'Bearer ' + token
