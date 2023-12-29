@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route } from "react-router-dom";
 import Blog from './pages/Blog';
 import Home from './pages/Home';
