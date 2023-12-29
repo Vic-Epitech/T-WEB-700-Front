@@ -26,7 +26,8 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
-import reduceText, { baseUrl, corisXUserDatas } from '../../utils/utils';
+import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { Navigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -94,7 +95,20 @@ export default function Dashboard() {
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState(1);
 
+  const logout = () => {
+    localStorage.removeItem(corisXUserDatas)
+    localStorage.removeItem(corisXUserToken)
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
+  };
+  
+  if(!userData) {
+    console.log(userData)
+    Navigate('');
+  }
+
   useEffect(() => {
+
 
      setLoader(true);
 
@@ -145,7 +159,10 @@ export default function Dashboard() {
 
                       <div style={{ display: "flex" }}>
 
-                        <h4 classname="mgl">{userData.firstname} {userData.lastname}</h4>
+                      { userData
+                        ? <h4 className="mgl">{userData.firstname} {userData.lastname}</h4>
+                        : ''
+                      }
 
                       </div>
 
@@ -240,7 +257,7 @@ export default function Dashboard() {
                         <ListItemIcon>
                             <PowerOff />
                         </ListItemIcon>
-                        <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
+                        <a style={{cursor: "pointer"}} className="menuLink" onClick={logout}> Déconexion </a>
                         {/* <ListItemText primary={'Profile'} /> */}
                       </ListItemButton>
                     </ListItem>

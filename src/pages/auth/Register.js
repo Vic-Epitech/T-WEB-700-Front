@@ -19,7 +19,7 @@ function Register(){
 
     const navigate = useNavigate();
   
-    const navigateToDash = () => {
+    const navigateToLogin = () => {
       navigate('/auth/login');
     };
   
@@ -57,11 +57,12 @@ function Register(){
   
               if(response.data.data) {
   
-                  // console.log('Success');
+                // console.log('Success');
                 //   localStorage.setItem(corisXUserToken, response.data.data.token);
   
+                navigateToLogin();
                 //   setTimeout(() => {
-                //       navigateToDash();
+                //       navigateToLogin();
                 //   }, 200);
   
               }
@@ -95,6 +96,8 @@ function Register(){
                         <form className="col-12 col-md-6 auth_container">
 
                             <h4>Création de Compte </h4>
+
+                            <h5>The username or the email already exists</h5>
 
                             <div className="form_login row gy-4">
 

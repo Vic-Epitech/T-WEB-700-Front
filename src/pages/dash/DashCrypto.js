@@ -25,7 +25,8 @@ import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { baseUrl, capitalize } from '../../utils/utils';
+import { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { Navigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -106,10 +107,23 @@ export default function Cryptos() {
     },
   ]
 
+  const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const [cryptos, setCryptos] = useState([]);
   const [cryptoloader, setCryptoLoader] = useState(true);
 
   const [page, setPage] = useState(1);
+
+  const logout = () => {
+    localStorage.removeItem(corisXUserDatas)
+    localStorage.removeItem(corisXUserToken)
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
+  };
+
+  if(!userData) {
+    Navigate('/');
+  }
+
 
   fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
   .then((response) => response.json())
@@ -137,9 +151,20 @@ export default function Cryptos() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           <a href="/" className="menuLink">
-              <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
-           </a>
+
+            <div className="main_container header">
+
+              <a href="/" className="menuLink">
+                            <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
+              </a>
+
+              <div style={{ display: "flex" }}>
+
+                <h4 className="mgl">{userData.firstname} {userData.lastname}</h4>
+
+              </div>
+
+            </div>
             {/* Count Of Money */}
           </Typography>
         </Toolbar>
@@ -225,7 +250,7 @@ export default function Cryptos() {
                 <ListItemIcon>
                     <PowerOff />
                 </ListItemIcon>
-                <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
+                <a style={{cursor: "pointer"}} className="menuLink" onClick={logout}> Déconexion </a>
                 {/* <ListItemText primary={'Profile'} /> */}
               </ListItemButton>
             </ListItem>

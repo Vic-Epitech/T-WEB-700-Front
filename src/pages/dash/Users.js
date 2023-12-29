@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -24,6 +24,8 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
+import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { Navigate } from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -85,6 +87,47 @@ export default function Users() {
     setOpen(false);
   };
 
+  const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
+  const token = localStorage.getItem(corisXUserToken)
+  const [posts, setPosts] = useState([]);
+  let totalPosts = undefined;
+  const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+
+  const logout = () => {
+    localStorage.removeItem(corisXUserDatas)
+    localStorage.removeItem(corisXUserToken)
+    // eslint-disable-next-line no-restricted-globals
+    location.reload();
+  };
+
+  useEffect(() => {
+
+    if(!userData) {
+      Navigate('/');
+    }
+
+     setLoader(true);
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+     fetch( baseUrl + 'users/', config)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+          //  totalPosts = data.data;
+          //  setPosts(totalPosts);
+
+          // setLoader(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+  }, []);
+
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -101,9 +144,21 @@ export default function Users() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-           <a href="/" className="menuLink">
-              <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
-           </a>
+
+            <div className="main_container header">
+
+              <a href="/" className="menuLink">
+                            <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
+              </a>
+
+              <div style={{ display: "flex" }}>
+
+                <h4 className="mgl">{userData.firstname} {userData.lastname}</h4>
+
+              </div>
+
+            </div>
+
             {/* Count Of Money */}
           </Typography>
         </Toolbar>
@@ -189,7 +244,7 @@ export default function Users() {
                 <ListItemIcon>
                     <PowerOff />
                 </ListItemIcon>
-                <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
+                <a style={{cursor: "pointer"}} className="menuLink" onClick={logout}> Déconexion </a>
                 {/* <ListItemText primary={'Profile'} /> */}
               </ListItemButton>
             </ListItem>

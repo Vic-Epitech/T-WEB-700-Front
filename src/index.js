@@ -6,7 +6,25 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter } from "react-router-dom";
 
+import axios from 'axios';
+import { corisXUserToken } from './utils/utils';
+
+axios.interceptors.request.use(
+  config => {
+      console.log('config 222')
+      const token = localStorage.getItem(corisXUserToken);
+      if (token) {
+          config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      config.headers['Content-Type'] = 'application/json';
+      return config;
+  },
+  error => {
+      Promise.reject(error)
+});
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <BrowserRouter>
 
