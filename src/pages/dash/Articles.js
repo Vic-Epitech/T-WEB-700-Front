@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -15,9 +15,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { DashboardCustomize } from '@mui/icons-material';
 import { Money } from '@mui/icons-material';
 import { Settings } from '@mui/icons-material';
@@ -27,6 +24,7 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
+import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 
 const drawerWidth = 240;
 
@@ -106,6 +104,75 @@ export default function Articles() {
         "icon": "<Person />"
     },
   ]
+
+  const [posts, setPosts] = useState([]);
+  let totalPosts = undefined;
+  const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+
+  useEffect(() => {
+
+     setLoader(true);
+
+     fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+           totalPosts = data.data;
+           setPosts(totalPosts);
+          //  setPosts(totalPosts['page' + actualPage]);
+          //  console.log(posts);
+
+          setLoader(false);
+          //  console.log(loader);
+        })
+        .catch((err) => {
+           console.log(err.message);
+        });
+  }, []);
+
+  const loadMoreArticles = () => {
+      
+      setPage(page + 1);
+      
+      setLoader(true);
+
+      fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(posts);
+          console.log(data.data);
+          console.log(posts.contat(data.data));
+           setPosts(posts.contat(data.data));
+           setLoader(false);
+        })
+        .catch((err) => {
+           console.log(err.message);
+        });
+
+    if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+      
+      setPage(page + 1);
+      
+      setLoader(true);
+
+      fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.data);
+           setPosts(posts.contat(data.data));
+           setLoader(false);
+        })
+        .catch((err) => {
+           console.log(err.message);
+        });
+
+    }
+    else {
+
+    }
+
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -219,7 +286,63 @@ export default function Articles() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Articles
+
+          <div className="body">
+
+                <h1>Nos Articles 📄</h1>
+
+                      <div className="main_container">
+
+                          <div className="latest_articles">
+
+                              <div className="row  gx-5">
+
+                                  {posts.map((post) => {
+                                      return (
+                                          <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
+
+                                              <div className="article">
+
+                                                  <img className="article_cover" src={ post.urlToImage } alt="cover" />
+
+                                                  <div className="article_details">
+
+                                                      <h2>{ post.title }</h2>
+
+                                                      <h3>{ reduceText(post.description) }</h3>
+
+                                                      <h4>Publié le : <span>{ post.publishedAt }</span> </h4>
+
+                                                  </div>
+
+                                              </div>
+
+                                          </a>
+                                      );
+                                  })}
+
+                                  { loader
+                                    ? <h2 className="text-center" >Chargement....</h2>
+                                    : ''
+                                  }
+
+                              </div>
+
+                          </div>
+
+                          <h2 className="more">
+
+                              { !loader
+                              ? <a onClick={loadMoreArticles} >Voir plus d'article</a>
+                              : ''
+                              }
+                              
+                          </h2>
+
+                      </div>
+
+          </div>
+
         </Typography>
       </Main>
     </Box>

@@ -1,10 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate} from 'react-router-dom';
+import { corisXUserDatas } from "../utils/utils";
 
 function Header(){
 
     const navigate = useNavigate();
+
+    const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   
     const navigateToHome = () => {
       navigate('/');
@@ -24,6 +27,12 @@ function Header(){
       navigate('/auth/login');
     };
 
+    useEffect(() => {
+
+      console.log(userData)
+
+    }, []);
+
     return (
         
         <>
@@ -38,7 +47,7 @@ function Header(){
 
                 <a onClick={navigateToCrytpos} style={{ marginRight: "10px", paddingTop: "5px", cursor: "pointer"}}> Market</a>
 
-                <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> dash</a>
+                {/* <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> dash</a> */}
 
                 <select>
                     <option value="someOption">XOF</option>
@@ -46,8 +55,16 @@ function Header(){
                     <option value="otherOption">DOLLAR</option>
                 </select>
 
+                { userData
+                  ? <a href="/dash">
+                    <img className="avatar" src={`https://ui-avatars.com/api/?name=${userData.firstname}+${userData.lastname}&background=random`} alt="Logo"/>
+                  </a>
+                  
+                  : <a onClick={navigateToLogin} style={{cursor: "pointer"}} className="login">Se Connecter</a>
+                }
+
                 {/* <a href="/auth/login" className="login">Se Connecter</a> */}
-                <a onClick={navigateToLogin} style={{cursor: "pointer"}} className="login">Se Connecter</a>
+                {/* <a onClick={navigateToLogin} style={{cursor: "pointer"}} className="login">Se Connecter</a> */}
 
                 {/* <img className="avatar" src={"https://ui-avatars.com/api/?name=John+Doe"} alt="Logo" /> */}
 

@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import Header from "../Header";
 import './auth.css'
 import axios from "axios";
-import { baseUrl, corisXUserToken } from "../../utils/utils";
+import { baseUrl, corisXUserDatas, corisXUserToken } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
 
 function Login(){
 
-    const [email, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setUsername] = useState("JohnDoex@example.com");
+    const [password, setPassword] = useState("securepassword");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
@@ -36,6 +36,7 @@ function Login(){
 
                 // console.log('Success');
                 localStorage.setItem(corisXUserToken, response.data.data.token);
+                localStorage.setItem(corisXUserDatas, JSON.stringify(response.data.data.userData));
 
                 setTimeout(() => {
                     navigateToDash();
