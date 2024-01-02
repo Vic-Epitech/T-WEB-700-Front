@@ -5,6 +5,7 @@ import './auth.css'
 import axios from "axios";
 import { baseUrl, corisXUserDatas, corisXUserToken } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
 function Login(){
 
@@ -18,6 +19,8 @@ function Login(){
     const navigateToDash = () => {
       navigate('/dash');
     };
+
+    const [ user, setUser ] = useState([]);
   
     const handleLogin = async () => {
 
@@ -54,6 +57,51 @@ function Login(){
           }
     };
 
+    const responseMessage = (response) => {
+        console.log(response);
+        if(response) {
+            
+            axios
+            .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${response.credential}`, {
+                headers: {
+                    Authorization: `Bearer ${response.credential}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then((res) => {
+                // setProfile(res.data);
+                console.log(res.data);
+            })
+            .catch((err) => console.log(err));
+        }
+    };
+
+    const errorMessage = (error) => {
+        console.log(error);
+    };
+
+
+    const login = useGoogleLogin({
+        onSuccess: (codeResponse) => {
+            console.log(codeResponse);
+            setUser(codeResponse)
+            
+            axios
+            .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${codeResponse.access_token}`, {
+                headers: {
+                    Authorization: `Bearer ${codeResponse.access_token}`,
+                    Accept: 'application/json'
+                }
+            })
+            .then((res) => {
+                // setProfile(res.data);
+                console.log(res.data);
+            })
+            .catch((err) => console.log(err));
+        },
+        onError: (error) => console.log('Login Failed:', error)
+    });
+
     return (
         
         <>
@@ -71,19 +119,21 @@ function Login(){
 
                             <h4>Connexion</h4>
 
-                            <div className="social_login row gx-5">
+                            {/* <div className="social_login row gx-5">
 
-                                <div className="col-12 col-md-6">
-                                    <a href="#" className="">
-                                        <img src="https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/google.png?alt=media&token=9100b195-b0d8-4f5a-a726-e7285c6a50b7" alt="google logo"/>
-                                        <h3>Google</h3>
-                                    </a>
+                                <div className="col-12 col-md-8 social_auth_align">
+                                    <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
                                 </div>
 
-                                <div className="col-12 col-md-6">
-                                    <a href="#" className="">
-                                        <img src="https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/facebook.png?alt=media&token=8c734175-2800-474f-a94f-1a9d3606d571" alt="Facebook logo"/>
-                                        <h3>Facebook</h3>
+
+                            </div> */}
+
+                            <div className="social_login row gx-5">
+
+                                <div className="col-12 col-md-6 social_auth_align">
+                                    <a href="#" className=""  onClick={() => login()} >
+                                        <h6>Se connecter avec Google</h6>
+                                        <img src="https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/google.png?alt=media&token=9100b195-b0d8-4f5a-a726-e7285c6a50b7" alt="google logo"/>
                                     </a>
                                 </div>
 
