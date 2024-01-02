@@ -50,7 +50,7 @@ function Header(){
 
                 {/* <a href="/dash" style={{ marginRight: "10px", paddingTop: "5px" }}> dash</a> */}
 
-                <select>
+                <select className="step__8">
                     <option value="someOption">XOF</option>
                     <option value="otherOption">EURO</option>
                     <option value="otherOption">DOLLAR</option>
@@ -61,7 +61,7 @@ function Header(){
                     <img className="avatar" src={`https://ui-avatars.com/api/?name=${userData.firstname}+${userData.lastname}&background=random`} alt="Logo"/>
                   </a>
                   
-                  : <a onClick={navigateToLogin} style={{cursor: "pointer"}} className="login">Se Connecter</a>
+                  : <a onClick={navigateToLogin} style={{cursor: "pointer"}} className="login step__9">Se Connecter</a>
                 }
 
                 {/* <a href="/auth/login" className="login">Se Connecter</a> */}
