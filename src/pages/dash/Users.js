@@ -26,8 +26,9 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
-import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from "react-router-dom";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -91,6 +92,9 @@ export default function Users() {
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const token = localStorage.getItem(corisXUserToken)
+  const [users, setUsers] = useState([]);
+  const [userloader, setUserLoader] = useState(true);
+  // const [userloader, setUserLoader] = useState(true);
   // const [posts, setPosts] = useState([]);
   // let totalPosts = undefined;
   // const [loader, setLoader] = useState(true);
@@ -109,6 +113,8 @@ export default function Users() {
       Navigate('/');
     }
 
+    setUserLoader(true);
+
     //  setLoader(true);
      let config = {
        headers: {
@@ -121,12 +127,13 @@ export default function Users() {
         .then((data) => {
            console.log(data);
           //  totalPosts = data.data;
-          //  setPosts(totalPosts);
+           setUsers(data.data);
 
           // setLoader(false);
         })
         .catch((err) => {
            console.log(err);
+           setUserLoader(false);
         });
   }, []);
 
@@ -194,13 +201,13 @@ export default function Users() {
                 {/* <ListItemText primary={'Dashboard'} /> */}
               </ListItemButton>
             </ListItem>
-            <ListItem key={'Cryptos'} disablePadding>
+            <ListItem key={'users'} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                     <Money />
                 </ListItemIcon>
-                <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
-                {/* <ListItemText primary={'Cryptos'} /> */}
+                <a href="/dash/users" className="menuLink"> users </a>
+                {/* <ListItemText primary={'users'} /> */}
               </ListItemButton>
             </ListItem>
             <ListItem key={'Articles'} disablePadding>
@@ -255,7 +262,82 @@ export default function Users() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Users
+
+            <div className="body">
+
+                <div className="main_container">
+
+                    <h2>Nos users</h2>
+
+                    <div className="latest_articles">
+                        
+                        <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell align="left">#</TableCell>
+                                    <TableCell align="left">Nom</TableCell>
+                                    <TableCell align="right">Username</TableCell>
+                                    <TableCell align="right">Email</TableCell>
+                                    <TableCell align="right">Cryptos Favorite</TableCell>
+                                    <TableCell align="right">Mots clés favoris</TableCell>
+                                    <TableCell align="right">Role</TableCell>
+                                    <TableCell align="right">Action</TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                              { users.length > 0 
+                              ? 
+
+                                <TableBody>
+
+                                  {users.map((row) => (
+                                        <TableRow
+                                        key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="left" component="th" scope="row"> { users.indexOf(row) + 1 } </TableCell>
+                                            <TableCell align="left" scope="row">
+                                                <img className="coin_logo" src={`https://api.dicebear.com/7.x/open-peeps/svg?seed=${row.firstname}+${row.lastname}`} alt="Logo" />
+                                                <span>{row.firstname} {row.lastname} </span>
+                                            </TableCell>
+                                            <TableCell align="right">{row.username}</TableCell>
+                                            <TableCell align="right">{row.email}</TableCell>
+                                            <TableCell align="right">{row.favCryptos}</TableCell>
+                                            <TableCell align="right">{row.keywords}</TableCell>
+                                            <TableCell align="right">{row.role}</TableCell>
+                                            <TableCell align="right">--</TableCell>
+                                        </TableRow>
+                                  ))}
+
+                                </TableBody>
+
+                              : ''
+                              }
+                              
+
+                        </Table>
+                        </TableContainer>
+
+                        { userloader
+                        ? <h2 className="text-center" >Chargement....</h2>
+                        : ''
+                        }
+
+                    </div>
+
+                    <h2 className="more">
+
+                        { !userloader
+                        ? <a href="/users">Voir plus de crypto 🪙</a>
+                        : ''
+                        }
+                        
+                    </h2>
+
+                </div>
+
+            </div>
         </Typography>
       </Main>
     </Box>

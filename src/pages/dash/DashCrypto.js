@@ -296,28 +296,39 @@ export default function Cryptos() {
                                     <TableCell align="right">Volume Total</TableCell>
                                 </TableRow>
                             </TableHead>
-                            <TableBody>
-                                {cryptos.map((row) => (
-                                    <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
-                                        <TableCell align="left" scope="row">
-                                            <img className="coin_logo" src={row.image} alt="Logo" />
-                                            <span>{row.name} </span>
-                                            ( <span>{capitalize(row.symbol) }</span> )
-                                        </TableCell>
-                                        <TableCell align="right">${row.current_price}</TableCell>
-                                        <TableCell align="right">${row.low_24h} / ${row.high_24h}</TableCell>
-                                        {/* <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell> */}
-                                        <TableCell align="right">{row.market_cap}</TableCell>
-                                        <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
-                                        <TableCell align="right" scope="row">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
+
+                              { cryptos.length > 0 
+                              ? 
+
+                                <TableBody>
+
+                                  {cryptos.map((row) => (
+                                        <TableRow
+                                        key={row.name}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        >
+                                            <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
+                                            <TableCell align="left" scope="row">
+                                                <img className="coin_logo" src={row.image} alt="Logo" />
+                                                <span>{row.name} </span>
+                                                ( <span>{capitalize(row.symbol) }</span> )
+                                            </TableCell>
+                                            <TableCell align="right">${row.current_price}</TableCell>
+                                            <TableCell align="right">${row.low_24h} / ${row.high_24h}</TableCell>
+                                            {/* <TableCell align="right">{row.calories}</TableCell>
+                                            <TableCell align="right">{row.calories}</TableCell> */}
+                                            <TableCell align="right">{row.market_cap}</TableCell>
+                                            <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                            <TableCell align="right" scope="row">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                        </TableRow>
+                                  ))}
+
+                                </TableBody>
+
+                              : ''
+                              }
+                              
+
                         </Table>
                         </TableContainer>
 

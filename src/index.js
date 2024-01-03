@@ -11,19 +11,19 @@ import { corisXUserToken } from './utils/utils';
 
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
-// axios.interceptors.request.use(
-//   config => {
-//       console.log('config 222')
-//       const token = localStorage.getItem(corisXUserToken);
-//       if (token) {
-//           config.headers['Authorization'] = 'Bearer ' + token;
-//       }
-//       config.headers['Content-Type'] = 'application/json';
-//       return config;
-//   },
-//   error => {
-//       Promise.reject(error)
-// });
+axios.interceptors.request.use(
+  config => {
+      // console.log('config 222')
+      const token = localStorage.getItem(corisXUserToken);
+      if (token) {
+          config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      config.headers['Content-Type'] = 'application/json';
+      return config;
+  },
+  error => {
+      Promise.reject(error)
+});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
