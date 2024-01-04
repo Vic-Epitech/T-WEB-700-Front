@@ -76,7 +76,7 @@ export default function Cryptos() {
 
                     <TableBody>
 
-                      {cryptos.map((row) => (
+                      {cryptos?.map((row) => (
                             <TableRow
                             key={row.name}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

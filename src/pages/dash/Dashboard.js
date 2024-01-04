@@ -74,7 +74,7 @@ export default function Dashboard() {
 
                       <div className="row  gx-5">
 
-                          {posts.map((post) => {
+                          {posts?.map((post) => {
                               return (
                                   <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
 

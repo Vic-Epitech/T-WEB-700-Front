@@ -87,7 +87,7 @@ function Crypto(){
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {cryptos.map((row) => (
+                                {cryptos?.map((row) => (
                                     <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

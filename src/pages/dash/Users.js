@@ -180,7 +180,7 @@ export default function Users() {
 
                               <TableBody>
 
-                                  {users.map((row) => (
+                                  {users?.map((row) => (
                                         <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

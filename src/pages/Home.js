@@ -280,7 +280,7 @@ function Home(){
 
                             <div className="row  gx-5 step__3">
 
-                                {posts.map((post) => {
+                                {posts?.map((post) => {
                                     return (
                                         <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
 
@@ -346,7 +346,7 @@ function Home(){
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {cryptos.map((row) => (
+                                    {cryptos?.map((row) => (
                                     <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
