@@ -27,6 +27,7 @@ import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
 import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from 'react-router-dom';
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -95,7 +96,9 @@ export default function Setting() {
     location.reload();
   };
 
+
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
+  const token = localStorage.getItem(corisXUserToken)
   
   const [maxCrypto, setmaxCrypto] = useState("");
   const [maxArticle, setmaxArticle] = useState("");
@@ -126,43 +129,41 @@ export default function Setting() {
   }, []);
 
   const changeSettingsDatas = async () => {
-
-    setloadingSettings(true);
     
-  //   const log = {
-  //     "lastname": lastName,
-  //     "firstname": firstName,
-  //     "username": userName,
-  //     "email": email
-  //  }
+    const log = {
+      "identifier": "Value1",
+      "newmaxCryptView": maxCrypto,
+      "newmaxArticleView": maxArticle
+   }
 
-  //    let config = {
-  //      headers: {
-  //        'Authorization': 'Bearer ' + token
-  //      }
-  //    }
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
 
-  //    try {
+     try {
 
-  //     setLoadingUserDatas(true);
+      setloadingSettings(true);
 
-  //      const response = await axios.post( baseUrl + 'users/updateuserinfos', log, config);
-  //      console.log(response.data); // Handle successful login
+       const response = await axios.put( baseUrl + 'anonym/updatevalues', log, config);
+       console.log(response.data); // Handle successful login
 
-  //      if(response.data.data) {
+       if(response.data) {
 
+          // eslint-disable-next-line no-restricted-globals
+          location.reload();
 
+       }
+       else {
+         //   setError(true);
+       }
 
-  //      }
-  //      else {
-  //        //   setError(true);
-  //      }
-
-  //    } catch (error) {
-  //      console.error('Login failed', error);
-  //    } finally {
-  //     setLoadingUserDatas(false);
-  //    }
+     } catch (error) {
+       console.error('Login failed', error);
+     } finally {
+      setloadingSettings(false);
+     }
 
   };
 
