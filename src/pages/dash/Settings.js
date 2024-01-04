@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from 'react';
+import React, { useEffect, useState } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -25,7 +25,7 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
-import { corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -96,11 +96,75 @@ export default function Setting() {
   };
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
+  
+  const [maxCrypto, setmaxCrypto] = useState("");
+  const [maxArticle, setmaxArticle] = useState("");
+
+  const [loadingSettings, setloadingSettings] = useState(false);
 
 
   if(!userData) {
     Navigate('/');
   }
+
+  useEffect(() => {
+
+     fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+
+           console.log(data);
+           setmaxCrypto(data.data.maxCryptView);
+           setmaxArticle(data.data.maxArticleView);
+           
+        })
+        .catch((err) => {
+           console.log(err);
+          //  setUserLoader(false);
+        });
+
+  }, []);
+
+  const changeSettingsDatas = async () => {
+
+    setloadingSettings(true);
+    
+  //   const log = {
+  //     "lastname": lastName,
+  //     "firstname": firstName,
+  //     "username": userName,
+  //     "email": email
+  //  }
+
+  //    let config = {
+  //      headers: {
+  //        'Authorization': 'Bearer ' + token
+  //      }
+  //    }
+
+  //    try {
+
+  //     setLoadingUserDatas(true);
+
+  //      const response = await axios.post( baseUrl + 'users/updateuserinfos', log, config);
+  //      console.log(response.data); // Handle successful login
+
+  //      if(response.data.data) {
+
+
+
+  //      }
+  //      else {
+  //        //   setError(true);
+  //      }
+
+  //    } catch (error) {
+  //      console.error('Login failed', error);
+  //    } finally {
+  //     setLoadingUserDatas(false);
+  //    }
+
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -225,7 +289,43 @@ export default function Setting() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Setting
+          
+
+          <div className="container">
+            
+            <div className="row gx-4">
+
+              <form className="col-md-5 form_container ml-2rem">
+
+                  <h4>Changement de Paramèttres de Config</h4>
+
+                  <div className="form_login row gy-4">
+
+                      <div className="col-12">
+                          <input type="text" className=""  value={maxCrypto} onChange={(e) => setmaxCrypto(e.target.value)} placeholder="Max crypto"/>
+                      </div>
+
+                      <div className="col-12">
+                          <input type="text" className=""  value={maxArticle} onChange={(e) => setmaxArticle(e.target.value)} placeholder="Max d\'article"/>
+                      </div>
+
+                  </div>
+
+                  <div className="form_login row actions">
+
+                      <div className="col-10 action">
+                          <input onClick={changeSettingsDatas} type="button" value={loadingSettings ? 'Changement de paramettre...' : 'Changer'}/>
+                      </div>
+
+                  </div>
+
+              </form>
+
+            </div>
+
+          </div>
+
+
         </Typography>
       </Main>
     </Box>
