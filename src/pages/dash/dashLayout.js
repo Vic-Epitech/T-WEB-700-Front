@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import * as React from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -26,7 +28,7 @@ import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
 import { corisXUserDatas, corisXUserToken } from '../../utils/utils';
-import { Navigate } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -75,7 +77,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function Management() {
+
+export default function DashLayout() {
 
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
@@ -87,10 +90,10 @@ export default function Management() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
+  
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
-
-
+  const token = localStorage.getItem(corisXUserToken)
+  
   if(!userData) {
     Navigate('/');
   }
@@ -101,8 +104,9 @@ export default function Management() {
     // eslint-disable-next-line no-restricted-globals
     location.reload();
   };
-
+  
   return (
+    
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
@@ -207,7 +211,6 @@ export default function Management() {
                     <Person />
                 </ListItemIcon>
                 <a href="/dash/profile" className="menuLink"> Profile </a>
-                {/* <ListItemText primary={'Profile'} /> */}
               </ListItemButton>
             </ListItem>
             <Divider />
@@ -217,7 +220,7 @@ export default function Management() {
                     <PowerOff />
                 </ListItemIcon>
                 <a style={{cursor: "pointer"}} className="menuLink" onClick={logout}> Déconexion </a>
-                {/* <ListItemText primary={'Profile'} /> */}
+                {/* <ListItemText primary={'DashLayout'} /> */}
               </ListItemButton>
             </ListItem>
         </List>
@@ -225,7 +228,11 @@ export default function Management() {
       <Main open={open}>
         <DrawerHeader />
         <Typography paragraph>
-          Management
+
+
+            <Outlet />
+
+
         </Typography>
       </Main>
     </Box>

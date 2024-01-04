@@ -35,7 +35,7 @@ function Register(){
             "username": userName,
             "email": email,
             "password": password,
-            "role": "admin",
+            "role": "user",
             "articles": "",
             "cryptos": ""
         }

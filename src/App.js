@@ -17,6 +17,7 @@ import Profile from "./pages/dash/Profile";
 import './App.css'
 import './index.css'
 import { corisXUserDatas, corisXUserToken } from './utils/utils';
+import DashLayout from './pages/dash/dashLayout';
 
 function App() {
 
@@ -29,13 +30,19 @@ function App() {
 
     { token && userD ? (
       <>
-        <Route path='/dash/*' element={<Dashboard />} />
-        <Route path="/dash" element={<Dashboard/>} />
-        <Route path="/dash/cryptos" element={<Cryptos/>} />
-        <Route path="/dash/articles" element={<Articles/>} />
-        <Route path="/dash/users" element={<Users/>} />
-        <Route path="/dash/settings" element={<Setting/>} />
-        <Route path="/dash/profile" element={<Profile/>} />
+        
+        <Route element={<DashLayout />}>
+          
+          <Route path='/dash/*' element={<Dashboard />} />
+          <Route path="/dash" element={<Dashboard/>} />
+          <Route path="/dash/cryptos" element={<Cryptos/>} />
+          <Route path="/dash/articles" element={<Articles/>} />
+          <Route path="/dash/users" element={<Users/>} />
+          <Route path="/dash/settings" element={<Setting/>} />
+          <Route path="/dash/profile" element={<Profile/>} />
+          
+        </Route>
+
       </>
     ) : (
       <>
