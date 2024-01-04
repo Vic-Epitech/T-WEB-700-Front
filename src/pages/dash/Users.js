@@ -26,7 +26,7 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
-import { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from "react-router-dom";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 
@@ -298,7 +298,7 @@ export default function Users() {
                                         >
                                             <TableCell align="left" component="th" scope="row"> { users.indexOf(row) + 1 } </TableCell>
                                             <TableCell align="left" scope="row">
-                                                <img className="coin_logo" src={`https://api.dicebear.com/7.x/open-peeps/svg?seed=${row.firstname}+${row.lastname}`} alt="Logo" />
+                                                <img className="coin_logo" src={`https://api.dicebear.com/7.x/open-peeps/svg?seed=${row.firstname}+${row.lastname}`} alt="user avatar" />
                                                 <span>{row.firstname} {row.lastname} </span>
                                             </TableCell>
                                             <TableCell align="right">{row.username}</TableCell>

@@ -152,3 +152,7 @@ a {
   color: brown;
   font-style: italic;
 }
+
+.d-flex {
+  display: flex;
+}

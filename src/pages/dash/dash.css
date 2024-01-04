@@ -21,3 +21,37 @@
     font-size: larger;
     font-weight: 600;
 }
+
+.profile_logo {
+    width: 19%;
+    border-radius: 50%;
+    border: #050e33 solid 4px;
+    margin-left: 21rem;
+}
+
+.profile_name {
+    font-size: -webkit-xxx-large;
+    font-weight: 600;
+    margin: 8rem 0 0 3rem;
+}
+
+.form_container {
+    padding: 2rem 2rem;
+    background-color: #636d93;
+    margin-top: 2rem;
+    border-radius: 10px;
+}
+
+.form_container h4{
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.ml-2rem {
+    margin-left: 2rem;
+}
+
+
+
+
+
