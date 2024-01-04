@@ -103,15 +103,16 @@ export default function Dashboard() {
     localStorage.removeItem(corisXUserDatas)
     localStorage.removeItem(corisXUserToken)
     // eslint-disable-next-line no-restricted-globals
-    location.reload();
-  };
-  
-  if(!userData) {
-    console.log(userData)
+    // location.reload();
     Navigate('');
-  }
+  };
 
   useEffect(() => {
+  
+    if(!userData) {
+      console.log(userData)
+      Navigate('');
+    }
 
 
      setLoader(true);

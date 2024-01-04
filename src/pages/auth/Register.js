@@ -35,9 +35,9 @@ function Register(){
             "username": userName,
             "email": email,
             "password": password,
-            // "role": "admin",
-            // "articles": "aa",
-            // "cryptos": "aa"
+            "role": "admin",
+            "articles": "",
+            "cryptos": ""
         }
 
         console.log(log)

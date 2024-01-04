@@ -162,11 +162,42 @@ export default function Profile() {
 
   };
 
-  const changePassword = () => {
-    // localStorage.removeItem(corisXUserDatas)
-    // localStorage.removeItem(corisXUserToken)
-    // // eslint-disable-next-line no-restricted-globals
-    // location.reload();
+  const changePassword = async () => {
+    
+      const log = {
+        "email": email,
+        "oldPassword": password,
+        "newPassword": confirmpassword
+    }
+
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+     try {
+
+      setLoadingPasswordDatas(true);
+
+       const response = await axios.put( baseUrl + 'users/password-update', log, config);
+       console.log(response.data); // Handle successful login
+
+       if(response.data) {
+
+        logout()
+
+       }
+       else {
+         //   setError(true);
+       }
+
+     } catch (error) {
+       console.error('Login failed', error);
+     } finally {
+      setLoadingPasswordDatas(false);
+     }
+    
   };
 
 
@@ -382,11 +413,11 @@ export default function Profile() {
                   <div className="form_login row gy-4">
 
                       <div className="col-12">
-                          <input type="password" className=""  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Mot de passe"/>
+                          <input type="password" className=""  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ancien Mot de passe"/>
                       </div>
 
                       <div className="col-12">
-                          <input type="password" className=""  value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirmer mot de passe"/>
+                          <input type="password" className=""  value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Nouveau mot de passe"/>
                       </div>
 
                   </div>
