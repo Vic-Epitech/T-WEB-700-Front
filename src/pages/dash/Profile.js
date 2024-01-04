@@ -140,12 +140,14 @@ export default function Profile() {
 
       setLoadingUserDatas(true);
 
-       const response = await axios.post( baseUrl + 'users/updateuserinfos', log, config);
+       const response = await axios.put( baseUrl + 'users/updateuserinfos', log, config);
        console.log(response.data); // Handle successful login
 
        if(response.data.data) {
 
-
+        localStorage.setItem(corisXUserDatas, JSON.stringify(response.data.data))
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
 
        }
        else {
