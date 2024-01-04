@@ -17,7 +17,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon'
-import { DashboardCustomize } from '@mui/icons-material';
+import { DashboardCustomize, Delete } from '@mui/icons-material';
 import { Money } from '@mui/icons-material';
 import { Settings } from '@mui/icons-material';
 import { Person } from '@mui/icons-material';
@@ -28,7 +28,8 @@ import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
 import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from "react-router-dom";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import axios from "axios";
 
 const drawerWidth = 240;
 
@@ -80,21 +81,12 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function Users() {
 
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
   const token = localStorage.getItem(corisXUserToken)
   const [users, setUsers] = useState([]);
   const [userloader, setUserLoader] = useState(true);
-  // const [userloader, setUserLoader] = useState(true);
+  const [user, setUser] = useState();
   // const [posts, setPosts] = useState([]);
   // let totalPosts = undefined;
   // const [loader, setLoader] = useState(true);
@@ -105,6 +97,40 @@ export default function Users() {
     localStorage.removeItem(corisXUserToken)
     // eslint-disable-next-line no-restricted-globals
     location.reload();
+  };
+
+  const selectUser = (_user) => {
+    setUser(_user)
+    handleClickOpen();
+  }
+
+  const deleteUser = async () => {
+    
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+      try {
+
+        const response = await axios.delete( baseUrl + 'users/user?username=' + user.username, config);
+         console.log(response.data); // Handle successful login
+  
+         if(response.data) {
+          // eslint-disable-next-line no-restricted-globals
+          location.reload();
+         }
+         else {
+           //   setError(true);
+         }
+  
+       } catch (error) {
+         console.error('Login failed', error);
+       } finally {
+       }
+
+    
   };
 
   useEffect(() => {
@@ -126,7 +152,7 @@ export default function Users() {
         .then((response) => response.json())
         .then((data) => {
            console.log(data);
-          //  totalPosts = data.data;
+           setUserLoader(false);
            setUsers(data.data);
 
           // setLoader(false);
@@ -137,11 +163,31 @@ export default function Users() {
         });
   }, []);
 
+  
+  const [_open, _setOpen] = useState(true);
+
+  const handleDrawerOpen = () => {
+    _setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    _setOpen(false);
+  };
+
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="fixed" open={_open}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -183,7 +229,7 @@ export default function Users() {
         }}
         variant="persistent"
         anchor="left"
-        open={open}
+        open={_open}
       >
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose} color="inherit">
@@ -259,15 +305,45 @@ export default function Users() {
             </ListItem>
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main open={_open}>
         <DrawerHeader />
         <Typography paragraph>
+
+          
+            <Dialog
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="alert-dialog-title"
+              aria-describedby="alert-dialog-description"
+            >
+              <DialogTitle id="alert-dialog-title">
+                {"Supression de Compte"}
+              </DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                        { user
+                        ? 
+                          <h2 >
+                            Voulez-vous vraiment suprimer: {user.firstname} {user.lastname} ??
+                          </h2>
+                        : ''
+                        }
+
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={ () => handleClose}>Non, Je refuse</Button>
+                <Button onClick={ () => deleteUser()} autoFocus>
+                  D'accords
+                </Button>
+              </DialogActions>
+            </Dialog>
 
             <div className="body">
 
                 <div className="main_container">
 
-                    <h2>Nos users</h2>
+                    <h2>Nos Utilisateurs</h2>
 
                     <div className="latest_articles">
                         
@@ -306,7 +382,11 @@ export default function Users() {
                                             <TableCell align="right">{row.favCryptos}</TableCell>
                                             <TableCell align="right">{row.keywords}</TableCell>
                                             <TableCell align="right">{row.role}</TableCell>
-                                            <TableCell align="right">--</TableCell>
+                                            <TableCell align="right">
+                                              <button type="button" onClick={ () => selectUser(row)} className="btn-delete">
+                                                Delete
+                                              </button>
+                                            </TableCell>
                                         </TableRow>
                                   ))}
 
@@ -325,15 +405,6 @@ export default function Users() {
                         }
 
                     </div>
-
-                    <h2 className="more">
-
-                        { !userloader
-                        ? <a href="/users">Voir plus de crypto 🪙</a>
-                        : ''
-                        }
-                        
-                    </h2>
 
                 </div>
 
