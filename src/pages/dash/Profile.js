@@ -68,7 +68,7 @@ export default function Profile() {
      fetch( baseUrl + 'users/user?username=' + userData.username , config)
         .then((response) => response.json())
         .then((data) => {
-           console.log(data);
+           localStorage.setItem(corisXUserDatas, JSON.stringify(data.data))
         })
         .catch((err) => {
            console.log(err);
@@ -136,11 +136,6 @@ export default function Profile() {
 
   const deleteKeyWords = async (key) => {
     
-    const _data = {
-      "username": userData.userName,
-      "keyword": key
-   }
-
      let config = {
        headers: {
          'Authorization': 'Bearer ' + token
@@ -149,9 +144,9 @@ export default function Profile() {
 
      try {
 
-      setLoadingUserDatas(true);
+      // setLoadingUserDatas(true);
 
-       const response = await axios.delete( baseUrl + 'users/deletekeyword', _data, config);
+       const response = await axios.delete( baseUrl + `users/deletekeyword?username=${userName}&keyword=${key}`, config);
        console.log(response.data); // Handle successful login
 
        if(response) {
@@ -167,7 +162,7 @@ export default function Profile() {
      } catch (error) {
        console.error('Login failed', error);
      } finally {
-      setLoadingUserDatas(false);
+      // setLoadingUserDatas(false);
      }
 
   };
