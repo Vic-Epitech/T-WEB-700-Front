@@ -1,24 +1,97 @@
-import React, { useState } from "react";
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, { useEffect, useState } from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-import { baseUrl, capitalize } from '../../utils/utils';
+import { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { useNavigate } from "react-router-dom";
 
 export default function Cryptos() {
 
-  const [cryptos, setCryptos] = useState([]);
-  const [cryptoloader, setCryptoLoader] = useState(true);
 
-  const [page] = useState(1);
+    const [cryptos, setCryptos] = useState([]);
+    const [cryptoloader, setCryptoLoader] = useState(true);
 
-  fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
-  .then((response) => response.json())
-  .then((data) => {
-     console.log(data);
-     setCryptos(data.data);
-     setCryptoLoader(false);
-  })
-  .catch((err) => {
-     console.log(err.message);
-  });
+    const navigate = useNavigate();
+    
+    const navigateToLogin = () => {
+      navigate('/auth/login');
+    };
+
+    useEffect(() => {
+              
+        setCryptoLoader(true);
+
+        fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+            
+            const _maxCryptos = data.data.maxCryptView;
+
+            sessionStorage.setItem('maxCryptos', _maxCryptos);
+            sessionStorage.setItem('page', 1);
+
+            setTimeout(() => {
+                loadCryptos();
+            }, 500);
+
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+        
+    }, []);
+  
+    const loadCryptos = () => {
+
+                fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setCryptos(data.data);
+                        setCryptoLoader(false);
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+
+    };
+  
+    const changePage = () => {
+              
+        sessionStorage.setItem('page', parseInt(sessionStorage.getItem('page')) + 1);
+
+    };
+  
+    const loadMoreCryptos = () => {
+
+      if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+                      
+        changePage()
+        
+        setCryptoLoader(true);
+
+          setTimeout(() => {
+                        
+            fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setCryptos([...cryptos, ...data.data]);
+                    setCryptoLoader(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+
+        }, 100);
+
+      }
+      else {
+          
+          navigateToLogin();
+
+      }
+
+    };
 
   return (
     
@@ -111,7 +184,7 @@ export default function Cryptos() {
           <h2 className="more">
 
               { !cryptoloader
-              ? <a href="/cryptos">Voir plus de crypto 🪙</a>
+              ? <a onClick={loadMoreCryptos}>Voir plus de crypto 🪙</a>
               : ''
               }
               

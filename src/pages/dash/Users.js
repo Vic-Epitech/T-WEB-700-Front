@@ -106,7 +106,7 @@ export default function Users() {
                 <DialogContentText id="alert-dialog-description">
                         { user
                         ? 
-                          <h2 >
+                          <h2 className="tt-l" >
                             Voulez-vous vraiment suprimer: {user.firstname} {user.lastname} ??
                           </h2>
                         : ''

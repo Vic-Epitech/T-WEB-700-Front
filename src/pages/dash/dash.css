@@ -13,7 +13,7 @@
 
 .mgl {
     margin-top: 5px;
-    margin-left: 54rem;
+    margin-left: 45rem;
 }
 
 .dashContainer h3{
@@ -58,6 +58,11 @@
     border-radius: 5px;
 }
 
+.tt-l {
+    text-align: center;
+        font-size: larger;
+        font-weight: 600;
+}
 
 
 

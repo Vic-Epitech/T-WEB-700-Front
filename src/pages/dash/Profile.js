@@ -5,6 +5,7 @@ import './dash.css';
 import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from 'react-router-dom';
 import axios from "axios";
+import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 
 export default function Profile() {
 
@@ -23,9 +24,64 @@ export default function Profile() {
 
   const [loadingPasswordDatas, setLoadingPasswordDatas] = useState(false);
 
-  if(!userData) {
-    Navigate('/');
-  }
+  
+  const [favoriteCryptoList, setFavoriteCryptoList] = useState([]);
+  const [cryptosList, setCryptoList] = useState([]);
+
+  const handleChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    console.log(event);
+    setFavoriteCryptoList(
+      event.target.value
+    );
+    // setFavoriteCryptoList(
+    //   // On autofill we get a stringified value.
+    //   typeof value === "string" ? value.split(",") : value
+    // );
+  };
+  
+  const ITEM_HEIGHT = 48;
+  const ITEM_PADDING_TOP = 8;
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+        width: 250,
+      },
+    },
+  };
+
+  useEffect(() => {
+
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+     fetch( baseUrl + 'users/user?username=' + userData.username , config)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+    
+    fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=20&page=1')
+      .then((response) => response.json())
+      .then((data) => {
+        setCryptoList(data.data);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    
+    
+  }, []);
+
 
   const logout = () => {
     localStorage.removeItem(corisXUserDatas)
@@ -40,7 +96,9 @@ export default function Profile() {
       "lastname": lastName,
       "firstname": firstName,
       "username": userName,
-      "email": email
+      "email": email,
+      "articles": "",
+      "cryptos": favoriteCryptoList
    }
 
      let config = {
@@ -113,31 +171,6 @@ export default function Profile() {
     
   };
 
-
-  useEffect(() => {
-
-    // console.log(userData)
-
-     let config = {
-       headers: {
-         'Authorization': 'Bearer ' + token
-       }
-     }
-
-     fetch( baseUrl + 'users/user?username=' + userData.username , config)
-        .then((response) => response.json())
-        .then((data) => {
-           console.log(data);
-          //  totalPosts = data.data;
-          //  setUser(data.data);
-
-          // setLoader(false);
-        })
-        .catch((err) => {
-           console.log(err);
-        });
-  }, []);
-
   return (
     
     <>
@@ -181,6 +214,71 @@ export default function Profile() {
             <div className="form_login row actions">
 
                 <div className="col-10 action">
+                    <input onClick={changeDatas} type="button" value={loadingUserDatas ? 'Changement d\'information...' : 'Valider'}/>
+                </div>
+
+            </div>
+
+        </form>
+
+        <form className="col-md-5 form_container ml-2rem">
+
+            <h4>Changement de mot de passe</h4>
+
+            <div className="form_login row gy-4">
+
+                <div className="col-12">
+                    <input type="password" className=""  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ancien Mot de passe"/>
+                </div>
+
+                <div className="col-12">
+                    <input type="password" className=""  value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Nouveau mot de passe"/>
+                </div>
+
+            </div>
+
+            <div className="form_login row actions">
+
+                <div className="col-10 action">
+                    <input onClick={changePassword} type="button" value={loadingPasswordDatas ? 'Changement de mot de passe...' : 'Changer'}/>
+                </div>
+
+            </div>
+
+        </form>
+
+        <form className="col-md-6 form_container">
+
+            <h4>Préférence de Crypto</h4>
+
+            <div className="form_login row gy-4">
+
+                <FormControl sx={{ m: 1, width: 300 }}>
+                  <InputLabel id="demo-multiple-checkbox-label">Cryptos</InputLabel>
+                  <Select
+                    labelId="demo-multiple-checkbox-label"
+                    id="demo-multiple-checkbox"
+                    multiple
+                    value={favoriteCryptoList}
+                    onChange={handleChange}
+                    input={<OutlinedInput label="Tag" />}
+                    renderValue={(selected) => selected.join(", ")}
+                    MenuProps={MenuProps}
+                  >
+                    {cryptosList?.map((crypto, index) => (
+                      <MenuItem key={crypto.id + index} value={crypto.id}>
+                        <Checkbox checked={favoriteCryptoList.indexOf(crypto.id) > -1} />
+                        <ListItemText primary={crypto.name} />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+            </div>
+
+            <div className="form_login row actions">
+
+                <div className="col-7 action">
                     <input onClick={changeDatas} type="button" value={loadingUserDatas ? 'Changement d\'information...' : 'Valider'}/>
                 </div>
 

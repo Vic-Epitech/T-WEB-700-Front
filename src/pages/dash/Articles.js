@@ -5,83 +5,98 @@ import React, { useEffect, useState } from "react";
 
 import './dash.css';
 import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export default function Articles() {
 
-  const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
-  const [posts, setPosts] = useState([]);
-  let totalPosts = undefined;
-  const [loader, setLoader] = useState(true);
-  const [page, setPage] = useState(1);
 
-  useEffect(() => {
+    const [posts, setPosts] = useState([]);
+    let totalPosts = undefined;
+    const [loader, setLoader] = useState(true);
+    
+    const navigate = useNavigate();
 
-    if(!userData) {
-      Navigate('/');
-    }
+    const navigateToLogin = () => {
+      navigate('/auth/login');
+    };
 
-     setLoader(true);
+    useEffect(() => {
+              
+        setLoader(true);
 
-     fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
+        fetch( baseUrl + 'anonym?identifier=Value1')
         .then((response) => response.json())
         .then((data) => {
-           console.log(data);
-           totalPosts = data.data;
-           setPosts(totalPosts);
-          //  setPosts(totalPosts['page' + actualPage]);
-          //  console.log(posts);
+            
+            const _maxArticle = data.data.maxArticleView;
 
-          setLoader(false);
-          //  console.log(loader);
+            sessionStorage.setItem('maxArticle', _maxArticle);
+            sessionStorage.setItem('page', 1);
+
+            setTimeout(() => {
+                loadArticles();
+            }, 500);
+
         })
         .catch((err) => {
-           console.log(err.message);
+           console.log(err);
         });
-  }, []);
+        
+    }, []);
+  
+    const loadArticles = () => {
 
-  const loadMoreArticles = () => {
-      
-      setPage(page + 1);
-      
-      setLoader(true);
+                fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        totalPosts = data.data;
+                        setPosts(totalPosts);
+                        setLoader(false);
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
 
-      fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(posts);
-          console.log(data.data);
-          console.log(posts.contat(data.data));
-           setPosts(posts.contat(data.data));
-           setLoader(false);
-        })
-        .catch((err) => {
-           console.log(err.message);
-        });
+    };
+  
+    const changePage = () => {
+              
+        sessionStorage.setItem('page', parseInt(sessionStorage.getItem('page')) + 1);
 
-    if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
-      
-      setPage(page + 1);
-      
-      setLoader(true);
+    };
+  
+    const loadMoreArticles = () => {
 
-      fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.data);
-           setPosts(posts.contat(data.data));
-           setLoader(false);
-        })
-        .catch((err) => {
-           console.log(err.message);
-        });
+      if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+                      
+        changePage()
+        
+        setLoader(true);
 
-    }
-    else {
+          setTimeout(() => {
+                        
+            fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setPosts([...posts, ...data.data]);
+                    setLoader(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
 
-    }
+        }, 100);
 
-  };
+      }
+      else {
+          
+          navigateToLogin();
+
+      }
+
+    };
 
   return (
   

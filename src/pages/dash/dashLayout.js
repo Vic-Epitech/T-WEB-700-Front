@@ -171,7 +171,7 @@ export default function DashLayout() {
         <Divider />
         <List>
             <ListItem key={'Dashboard'} disablePadding>
-              <ListItemButton>
+              <ListItemButton href="/dash">
                 <ListItemIcon>
                     <DashboardCustomize />
                 </ListItemIcon >
@@ -187,7 +187,7 @@ export default function DashLayout() {
               ? 
             
                 <ListItem key={'Cryptos'} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton href="/dash/cryptos">
                     <ListItemIcon>
                         <Money />
                     </ListItemIcon>
@@ -206,7 +206,7 @@ export default function DashLayout() {
               ? 
             
                 <ListItem key={'Articles'} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton href="/dash/articles">
                     <ListItemIcon>
                         <Newspaper />
                     </ListItemIcon>
@@ -224,7 +224,7 @@ export default function DashLayout() {
               ? 
             
                 <ListItem key={'Users'} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton href="/dash/users">
                     <ListItemIcon>
                         <VerifiedUserTwoTone />
                     </ListItemIcon>
@@ -242,7 +242,7 @@ export default function DashLayout() {
               ? 
             
                 <ListItem key={'Configurations'} disablePadding>
-                  <ListItemButton>
+                  <ListItemButton href="/dash/settings">
                     <ListItemIcon>
                         <Settings />
                     </ListItemIcon>
@@ -259,7 +259,7 @@ export default function DashLayout() {
             
             
             <ListItem key={'Profile'} disablePadding>
-              <ListItemButton>
+              <ListItemButton href="/dash/profile">
                 <ListItemIcon>
                     <Person />
                 </ListItemIcon>
