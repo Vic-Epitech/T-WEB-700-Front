@@ -140,7 +140,7 @@ export default function Users() {
                                     <TableCell align="left">Email</TableCell>
                                     <TableCell align="center">Cryptos Favorite</TableCell>
                                     <TableCell align="center">Mots clés favoris</TableCell>
-                                    <TableCell align="center">Statut</TableCell>
+                                    {/* <TableCell align="center">Statut</TableCell> */}
                                     <TableCell align="center">Role</TableCell>
                                     <TableCell align="center">Action</TableCell>
                                 </TableRow>
@@ -148,9 +148,9 @@ export default function Users() {
 
                               <TableBody>
 
-                                  {users?.map((row) => (
+                                  {users?.map((row, index) => (
                                         <TableRow
-                                        key={row.name}
+                                        key={row.name+index}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                         >
                                             <TableCell align="left" component="th" scope="row"> { users.indexOf(row) + 1 } </TableCell>
@@ -162,7 +162,7 @@ export default function Users() {
                                             <TableCell align="left">{row.email}</TableCell>
                                             <TableCell align="center">{row.favCryptos.length}</TableCell>
                                             <TableCell align="center">{row.keywords.length}</TableCell>
-                                            <TableCell align="center">{row.status}</TableCell>
+                                            {/* <TableCell align="center">{row.status}</TableCell> */}
                                             <TableCell align="center">{row.role}</TableCell>
                                             <TableCell align="center">
                                               <button type="button" onClick={ () => selectUser(row)} className="btn-delete">
