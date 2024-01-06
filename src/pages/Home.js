@@ -58,6 +58,8 @@ function Home(){
           // console.log(userData.favCryptos?.filter((crypt) => crypt.symbol === 'bitcoin'))
           setUserData(data.data)
           localStorage.setItem(corisXUserDatas, JSON.stringify(data.data));
+          // console.log(userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )))
+          // console.log(userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join(''))
         })
         .catch((err) => {
            console.log(err);
@@ -308,9 +310,24 @@ function Home(){
 
                 <div className="main_container step__2" style={{ marginTop: "1rem" }}>
 
-                    <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
+                    {
+                                                
+                      userData.favCryptos?.length > 0
+                                                
+                      ?
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids={userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join('')}
                         currency="usd" background-color="#ffffff" locale="fr">
-                    </coingecko-coin-price-marquee-widget>
+                      </coingecko-coin-price-marquee-widget>
+                                 
+                      : 
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
+                        currency="usd" background-color="#ffffff" locale="fr">
+                      </coingecko-coin-price-marquee-widget>
+
+                    }
+                          
 
                 </div>
 

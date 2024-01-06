@@ -64,9 +64,23 @@ export default function Dashboard() {
                 
                   <h3>Le cours de vos cryptos préférés</h3>
 
-                  <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
-                    currency="usd" background-color="#ffffff" locale="fr">
-                  </coingecko-coin-price-marquee-widget>
+                  {
+                                                
+                      userData.favCryptos?.length > 0
+                                                
+                      ?
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids={userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join('')}
+                        currency="usd" background-color="#ffffff" locale="fr">
+                      </coingecko-coin-price-marquee-widget>
+                                 
+                      : 
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
+                        currency="usd" background-color="#ffffff" locale="fr">
+                      </coingecko-coin-price-marquee-widget>
+
+                    }
                 
                   <h3>Presse Review</h3>
 
