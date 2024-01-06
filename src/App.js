@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from "react-router-dom";
 import Blog from './pages/Blog';
 import Home from './pages/Home';
@@ -16,13 +16,38 @@ import Profile from "./pages/dash/Profile";
 
 import './App.css'
 import './index.css'
-import { corisXUserDatas, corisXUserToken } from './utils/utils';
+import { baseUrl, corisXUserDatas, corisXUserToken } from './utils/utils';
 import DashLayout from './pages/dash/dashLayout';
 
 function App() {
 
   const token = localStorage.getItem(corisXUserToken);
   const userD = localStorage.getItem(corisXUserDatas)
+
+  // useEffect(() => {
+
+  //    let config = {
+  //      headers: {
+  //        'Authorization': 'Bearer ' + token
+  //      }
+  //    }
+
+  //   if (userD) {
+    
+  //    fetch( baseUrl + 'users/user?username=' + userD.username , config)
+  //       .then((response) => response.json())
+  //       .then((data) => {
+  //         console.log(data);
+  //         localStorage.setItem(corisXUserDatas, JSON.stringify(data.data));
+  //       })
+  //       .catch((err) => {
+  //          console.log(err);
+  //       });
+       
+  //    } 
+    
+    
+  // }, []);
 
   return (
       

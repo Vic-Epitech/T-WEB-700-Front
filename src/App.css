@@ -59,3 +59,8 @@ thead tr th {
   width: 35px;
   margin-right: 8px;
 }
+
+.d-flex {
+  margin: 0 auto;
+  display: flex;
+}

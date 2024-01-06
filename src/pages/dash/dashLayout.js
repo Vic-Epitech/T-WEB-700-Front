@@ -27,7 +27,7 @@ import './dash.css';
 import { Newspaper } from '@mui/icons-material';
 import { VerifiedUserTwoTone } from '@mui/icons-material';
 import { PowerOff } from '@mui/icons-material';
-import { corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
@@ -101,8 +101,22 @@ export default function DashLayout() {
 
   useEffect(() => {
 
-    // console.log(userData)
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
 
+     fetch( baseUrl + 'users/user?username=' + userData.username , config)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+    
+    
   }, []);
 
   const logout = () => {
@@ -119,9 +133,13 @@ export default function DashLayout() {
   return (
     
     <Box sx={{ display: 'flex' }}>
+
       <CssBaseline />
+
       <AppBar position="fixed" open={open}>
+        
         <Toolbar>
+
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -131,12 +149,13 @@ export default function DashLayout() {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography variant="h6" noWrap component="div">
 
             <div className="main_container header">
 
               <a href="/" className="menuLink">
-                            <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
+                <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
               </a>
 
               <div style={{ display: "flex" }}>
