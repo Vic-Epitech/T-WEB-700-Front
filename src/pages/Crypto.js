@@ -259,7 +259,16 @@ function Crypto(){
                                         <TableCell align="right">Cap du Marché</TableCell>
                                         <TableCell align="right">Max d'approvisionnement</TableCell>
                                         <TableCell align="right">Volume Total</TableCell>
-                                        <TableCell align="right">Actions</TableCell>
+                                        {
+                                            userData
+                                            
+                                            ? 
+
+                                            <TableCell align="right">Actions</TableCell>
+
+                                            : ''
+
+                                        }
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>

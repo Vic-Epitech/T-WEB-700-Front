@@ -65,5 +65,8 @@
 }
 
 
-
+.css-uoam7u-MuiButtonBase-root-MuiChip-root, .css-18vr5r7-MuiButtonBase-root-MuiChip-root { 
+    width: 100% !important;
+    font-size: larger !important;
+}
 

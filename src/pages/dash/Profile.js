@@ -5,7 +5,8 @@ import './dash.css';
 import { baseUrl, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from 'react-router-dom';
 import axios from "axios";
-import { Checkbox, FormControl, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Chip } from "@mui/material";
+import { Delete } from "@mui/icons-material";
 
 export default function Profile() {
 
@@ -24,6 +25,9 @@ export default function Profile() {
 
   const [loadingPasswordDatas, setLoadingPasswordDatas] = useState(false);
 
+  const [keyWord, setkeyWord] = useState('');
+  
+  const [addKeyWordLoading, setaddKeyWordLoading] = useState(false);
   
   const [favoriteCryptoList, setFavoriteCryptoList] = useState([]);
   const [cryptosList, setCryptoList] = useState([]);
@@ -88,6 +92,84 @@ export default function Profile() {
     localStorage.removeItem(corisXUserToken)
     // eslint-disable-next-line no-restricted-globals
     location.reload();
+  };
+
+  const addKeyWords = async () => {
+    
+    const _data = {
+      "username": userName,
+      "keyword": keyWord
+   }
+
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+     try {
+
+      setaddKeyWordLoading(true);
+
+       const response = await axios.post(baseUrl + 'users/addkeyword', _data, config);
+       
+       console.log(response.data); // Handle successful login
+
+       if(response) {
+
+        // localStorage.setItem(corisXUserDatas, JSON.stringify(response.data.data))
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
+
+       }
+       else {
+         //   setError(true);
+       }
+
+     } catch (error) {
+       console.error('Login failed', error);
+     } finally {
+      setaddKeyWordLoading(false);
+     }
+
+  };
+
+  const deleteKeyWords = async (key) => {
+    
+    const _data = {
+      "username": userData.userName,
+      "keyword": key
+   }
+
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
+
+     try {
+
+      setLoadingUserDatas(true);
+
+       const response = await axios.delete( baseUrl + 'users/deletekeyword', _data, config);
+       console.log(response.data); // Handle successful login
+
+       if(response) {
+
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
+
+       }
+       else {
+         //   setError(true);
+       }
+
+     } catch (error) {
+       console.error('Login failed', error);
+     } finally {
+      setLoadingUserDatas(false);
+     }
+
   };
 
   const changeDatas = async () => {
@@ -249,63 +331,42 @@ export default function Profile() {
 
         <form className="col-md-6 form_container">
 
-            <h4>Préférence de Crypto</h4>
+            <h4>Mots Clés</h4>
 
+          
             <div className="form_login row gy-4">
 
-                <FormControl sx={{ m: 1, width: 300 }}>
-                  <InputLabel id="demo-multiple-checkbox-label">Cryptos</InputLabel>
-                  <Select
-                    labelId="demo-multiple-checkbox-label"
-                    id="demo-multiple-checkbox"
-                    multiple
-                    value={favoriteCryptoList}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Tag" />}
-                    renderValue={(selected) => selected.join(", ")}
-                    MenuProps={MenuProps}
-                  >
-                    {cryptosList?.map((crypto, index) => (
-                      <MenuItem key={crypto.id + index} value={crypto.id}>
-                        <Checkbox checked={favoriteCryptoList.indexOf(crypto.id) > -1} />
-                        <ListItemText primary={crypto.name} />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                <div className="col-12">
+                    <input type="text" className=""  value={keyWord} onChange={(e) => setkeyWord(e.target.value)} placeholder="Mot clé"/>
+              </div>
+              
+              
+
+              <div className="row gy-4">
+
+                {userData.keywords?.map((row, index) => (
+                                        
+                    <div className="col-4">
+
+                        <Chip
+                          label={userData.keywords[index]}
+                          color="primary"
+                          deleteIcon={<Delete />}
+                          onDelete={ () => deleteKeyWords(row) }
+                        />
+
+                    </div>                 
+                                        
+                ))}
+
+              </div>
 
             </div>
 
             <div className="form_login row actions">
 
                 <div className="col-7 action">
-                    <input onClick={changeDatas} type="button" value={loadingUserDatas ? 'Changement d\'information...' : 'Valider'}/>
-                </div>
-
-            </div>
-
-        </form>
-
-        <form className="col-md-5 form_container ml-2rem">
-
-            <h4>Changement de mot de passe</h4>
-
-            <div className="form_login row gy-4">
-
-                <div className="col-12">
-                    <input type="password" className=""  value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Ancien Mot de passe"/>
-                </div>
-
-                <div className="col-12">
-                    <input type="password" className=""  value={confirmpassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Nouveau mot de passe"/>
-                </div>
-
-            </div>
-
-            <div className="form_login row actions">
-
-                <div className="col-10 action">
-                    <input onClick={changePassword} type="button" value={loadingPasswordDatas ? 'Changement de mot de passe...' : 'Changer'}/>
+                    <input onClick={addKeyWords} type="button" value={addKeyWordLoading ? 'Ajout en cour...' : 'Ajouter'}/>
                 </div>
 
             </div>
@@ -319,4 +380,6 @@ export default function Profile() {
     </>
     
   );
+
 }
+

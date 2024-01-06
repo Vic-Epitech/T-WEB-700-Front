@@ -312,11 +312,11 @@ function Home(){
 
                     {
                                                 
-                      userData.favCryptos?.length > 0
+                      userData?.favCryptos?.length > 0
                                                 
                       ?
                                                   
-                      <coingecko-coin-price-marquee-widget coin-ids={userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join('')}
+                      <coingecko-coin-price-marquee-widget coin-ids={userData?.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData?.favCryptos?.length - 1 ? '' : ','}` )).join('')}
                         currency="usd" background-color="#ffffff" locale="fr">
                       </coingecko-coin-price-marquee-widget>
                                  
@@ -407,7 +407,19 @@ function Home(){
                                         <TableCell align="right">Cap du Marché</TableCell>
                                         <TableCell align="right">Max d'approvisionnement</TableCell>
                                         <TableCell align="right">Volume Total</TableCell>
-                                        <TableCell align="right">Actions</TableCell>
+
+                                        {
+                                            userData
+                                            
+                                            ? 
+
+                                            <TableCell align="right">Actions</TableCell>
+
+                                            : ''
+
+                                        }
+                      
+                                        
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -439,7 +451,7 @@ function Home(){
 
                                               {
                                                 
-                                                userData.favCryptos?.filter((crypt) => crypt.symbol === row.id).length > 0
+                                                userData?.favCryptos?.filter((crypt) => crypt.symbol === row.id).length > 0
                                                 
                                                 ?
                                                   
