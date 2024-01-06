@@ -33,33 +33,28 @@ function Home(){
     const [cryptoloader, setCryptoLoader] = useState(true);
 
     const [page] = useState(1);
+    
+    const [maxArticle, setMaxArticle] = useState();
+    const [maxCrypto, setMaxCrypto] = useState();
 
-    useEffect(() => {
+  useEffect(() => {
+      
+    
 
-       setLoader(true);
+        fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.data);
+            // setMaxArticle(data.data.maxArticleView); 
+            // setMaxCrypto(data.data.maxCryptView); 
+            setLoader(true);
+            getArticles(3);
+            getCryptos(data.data.maxCryptView);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
 
-       fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=3&page=' + page)
-          .then((response) => response.json())
-          .then((data) => {
-            //  console.log(data);
-             setPosts(data.data);
-             setLoader(false);
-          })
-          .catch((err) => {
-             console.log(err.message);
-          });
-          
-
-       fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
-       .then((response) => response.json())
-       .then((data) => {
-          console.log(data);
-          setCryptos(data.data);
-          setCryptoLoader(false);
-       })
-       .catch((err) => {
-          console.log(err.message);
-       });
 
     }, []);
 
@@ -184,6 +179,36 @@ function Home(){
         // },
       ],
     });
+  
+    const getArticles = (numb) => {
+
+       fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${numb}&page=1`)
+          .then((response) => response.json())
+          .then((data) => {
+            //  console.log(data);
+             setPosts(data.data);
+             setLoader(false);
+          })
+          .catch((err) => {
+             console.log(err.message);
+          });
+      
+    };
+  
+    const getCryptos = (numb) => {          
+
+       fetch( baseUrl +  `cryptos/cryptosbypage?q=bitcoin&Numb=${numb}&page=1`)
+       .then((response) => response.json())
+       .then((data) => {
+          console.log(data);
+          setCryptos(data.data);
+          setCryptoLoader(false);
+       })
+       .catch((err) => {
+          console.log(err.message);
+       });
+      
+    };
   
     useMount(() => {
       a11yChecker();
