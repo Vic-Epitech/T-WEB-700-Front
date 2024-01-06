@@ -136,47 +136,15 @@ export default function Users() {
                                 <TableRow>
                                     <TableCell align="left">#</TableCell>
                                     <TableCell align="left">Nom</TableCell>
-                                    <TableCell align="right">Username</TableCell>
-                                    <TableCell align="right">Email</TableCell>
-                                    <TableCell align="right">Cryptos Favorite</TableCell>
-                                    <TableCell align="right">Mots clés favoris</TableCell>
-                                    <TableCell align="right">Role</TableCell>
-                                    <TableCell align="right">Action</TableCell>
+                                    <TableCell align="left">Username</TableCell>
+                                    <TableCell align="left">Email</TableCell>
+                                    <TableCell align="center">Cryptos Favorite</TableCell>
+                                    <TableCell align="center">Mots clés favoris</TableCell>
+                                    <TableCell align="center">Statut</TableCell>
+                                    <TableCell align="center">Role</TableCell>
+                                    <TableCell align="center">Action</TableCell>
                                 </TableRow>
                             </TableHead>
-
-                              {/* { users.length > 0 
-                              ? 
-
-                                <TableBody>
-
-                                  {users.map((row) => (
-                                        <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                        >
-                                            <TableCell align="left" component="th" scope="row"> { users.indexOf(row) + 1 } </TableCell>
-                                            <TableCell align="left" scope="row">
-                                                <img className="coin_logo" src={`https://api.dicebear.com/7.x/open-peeps/svg?seed=${row.firstname}+${row.lastname}`} alt="user avatar" />
-                                                <span>{row.firstname} {row.lastname} </span>
-                                            </TableCell>
-                                            <TableCell align="right">{row.username}</TableCell>
-                                            <TableCell align="right">{row.email}</TableCell>
-                                            <TableCell align="right">{row.favCryptos}</TableCell>
-                                            <TableCell align="right">{row.keywords}</TableCell>
-                                            <TableCell align="right">{row.role}</TableCell>
-                                            <TableCell align="right">
-                                              <button type="button" onClick={ () => selectUser(row)} className="btn-delete">
-                                                Delete
-                                              </button>
-                                            </TableCell>
-                                        </TableRow>
-                                  ))}
-
-                                </TableBody>
-
-                              : ''
-                              } */}
 
                               <TableBody>
 
@@ -190,12 +158,13 @@ export default function Users() {
                                                 <img className="coin_logo" src={`https://api.dicebear.com/7.x/open-peeps/svg?seed=${row.firstname}+${row.lastname}`} alt="user avatar" />
                                                 <span>{row.firstname} {row.lastname} </span>
                                             </TableCell>
-                                            <TableCell align="right">{row.username}</TableCell>
-                                            <TableCell align="right">{row.email}</TableCell>
-                                            <TableCell align="right">{row.favCryptos}</TableCell>
-                                            <TableCell align="right">{row.keywords}</TableCell>
-                                            <TableCell align="right">{row.role}</TableCell>
-                                            <TableCell align="right">
+                                            <TableCell align="left">{row.username}</TableCell>
+                                            <TableCell align="left">{row.email}</TableCell>
+                                            <TableCell align="center">{row.favCryptos.length}</TableCell>
+                                            <TableCell align="center">{row.keywords.length}</TableCell>
+                                            <TableCell align="center">{row.status}</TableCell>
+                                            <TableCell align="center">{row.role}</TableCell>
+                                            <TableCell align="center">
                                               <button type="button" onClick={ () => selectUser(row)} className="btn-delete">
                                                 Delete
                                               </button>
