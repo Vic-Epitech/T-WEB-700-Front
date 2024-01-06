@@ -169,7 +169,7 @@ export default function Profile() {
                 </div>
 
                 <div className="col-12">
-                    <input type="text" className="" disabled value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Username"/>
+                    <input type="text" className="" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="Username"/>
                 </div>
 
                 <div className="col-12">
