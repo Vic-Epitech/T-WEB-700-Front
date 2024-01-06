@@ -1,7 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import { baseUrl, capitalize } from "../utils/utils";
+import { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from "../utils/utils";
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,19 +17,98 @@ function Crypto(){
 
     const [cryptos, setCryptos] = useState([]);
     const [cryptoloader, setCryptoLoader] = useState(true);
+    
+    const navigateToLogin = () => {
+      navigate('/auth/login');
+    };
 
-    const [page] = useState(1);
+    useEffect(() => {
+              
+        setCryptoLoader(true);
 
-    fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
-    .then((response) => response.json())
-    .then((data) => {
-       console.log(data);
-       setCryptos(data.data);
-       setCryptoLoader(false);
-    })
-    .catch((err) => {
-       console.log(err.message);
-    });
+        fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+            
+            const _maxCryptos = data.data.maxCryptView;
+
+            sessionStorage.setItem('maxCryptos', _maxCryptos);
+            sessionStorage.setItem('page', 1);
+
+            setTimeout(() => {
+                loadCryptos();
+            }, 500);
+
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+        
+    }, []);
+  
+    const loadCryptos = () => {
+
+                fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        setCryptos(data.data);
+                        setCryptoLoader(false);
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+
+    };
+  
+    const changePage = () => {
+              
+        sessionStorage.setItem('page', parseInt(sessionStorage.getItem('page')) + 1);
+
+    };
+  
+    const loadMoreCryptos = () => {
+
+      if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+                      
+        changePage()
+        
+        setCryptoLoader(true);
+
+          setTimeout(() => {
+                        
+            fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setCryptos([...cryptos, ...data.data]);
+                    setCryptoLoader(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+
+        }, 100);
+
+      }
+      else {
+          
+          navigateToLogin();
+
+      }
+
+    };
+
+    // fetch( baseUrl + 'cryptos/cryptosbypage?q=bitcoin&Numb=12&page=' + page)
+    // .then((response) => response.json())
+    // .then((data) => {
+    //    console.log(data);
+    //    setCryptos(data.data);
+    //    setCryptoLoader(false);
+    // })
+    // .catch((err) => {
+    //    console.log(err.message);
+    // });
 
     return (
         
@@ -79,17 +160,15 @@ function Crypto(){
                                     <TableCell align="left">Nom</TableCell>
                                     <TableCell align="right">Prix($)</TableCell>
                                     <TableCell align="right">Min / Max (24h)</TableCell>
-                                    {/* <TableCell align="right">24h %</TableCell>
-                                    <TableCell align="right">7d %</TableCell> */}
                                     <TableCell align="right">Cap du Marché</TableCell>
                                     <TableCell align="right">Max d'approvisionnement</TableCell>
                                     <TableCell align="right">Volume Total</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {cryptos?.map((row) => (
+                                {cryptos?.map((row, index) => (
                                     <TableRow
-                                    key={row.name}
+                                    key={row.name + index}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
@@ -100,8 +179,6 @@ function Crypto(){
                                         </TableCell>
                                         <TableCell align="right">${row.current_price}</TableCell>
                                         <TableCell align="right">${row.low_24h} / ${row.high_24h}</TableCell>
-                                        {/* <TableCell align="right">{row.calories}</TableCell>
-                                        <TableCell align="right">{row.calories}</TableCell> */}
                                         <TableCell align="right">{row.market_cap}</TableCell>
                                         <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                         <TableCell align="right" scope="row">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
@@ -121,7 +198,7 @@ function Crypto(){
                     <h2 className="more">
 
                         { !cryptoloader
-                        ? <a href="/cryptos">Voir plus de crypto 🪙</a>
+                        ? <a onClick={loadMoreCryptos}>Voir plus de crypto 🪙</a>
                         : ''
                         }
                         
