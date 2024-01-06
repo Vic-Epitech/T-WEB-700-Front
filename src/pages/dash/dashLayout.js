@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useEffect } from "react";
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
@@ -98,11 +98,22 @@ export default function DashLayout() {
     Navigate('/');
   }
 
+
+  useEffect(() => {
+
+    // console.log(userData)
+
+  }, []);
+
   const logout = () => {
     localStorage.removeItem(corisXUserDatas)
     localStorage.removeItem(corisXUserToken)
     // eslint-disable-next-line no-restricted-globals
     location.reload();
+  };
+
+  const isAdmin = () => {
+    return userData.role === 'admin';
   };
   
   return (
@@ -168,43 +179,85 @@ export default function DashLayout() {
                 {/* <ListItemText primary={'Dashboard'} /> */}
               </ListItemButton>
             </ListItem>
-            <ListItem key={'Cryptos'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Money />
-                </ListItemIcon>
-                <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
-                {/* <ListItemText primary={'Cryptos'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Articles'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Newspaper />
-                </ListItemIcon>
-                <a href="/dash/articles" className="menuLink"> Articles </a>
-                {/* <ListItemText primary={'Articles'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Users'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <VerifiedUserTwoTone />
-                </ListItemIcon>
-                <a href="/dash/users" className="menuLink"> Users </a>
-                {/* <ListItemText primary={'Users'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Configurations'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Settings />
-                </ListItemIcon>
-                <a href="/dash/settings" className="menuLink"> Configurations </a>
-                {/* <ListItemText primary={'Configurations'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <Divider />
+            
+            
+
+            { userData.role === 'admin'
+              
+              ? 
+            
+                <ListItem key={'Cryptos'} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                        <Money />
+                    </ListItemIcon>
+                    <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
+                    {/* <ListItemText primary={'Cryptos'} /> */}
+                  </ListItemButton>
+                </ListItem>
+            
+              : ''
+            
+            }
+
+
+            { userData.role === 'admin'
+              
+              ? 
+            
+                <ListItem key={'Articles'} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                        <Newspaper />
+                    </ListItemIcon>
+                    <a href="/dash/articles" className="menuLink"> Articles </a>
+                    {/* <ListItemText primary={'Articles'} /> */}
+                  </ListItemButton>
+                </ListItem>
+            
+              : ''
+            
+            }
+
+            { userData.role === 'admin'
+              
+              ? 
+            
+                <ListItem key={'Users'} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                        <VerifiedUserTwoTone />
+                    </ListItemIcon>
+                    <a href="/dash/users" className="menuLink"> Users </a>
+                    {/* <ListItemText primary={'Users'} /> */}
+                  </ListItemButton>
+                </ListItem>
+            
+              : ''
+            
+            }
+
+            { userData.role === 'admin'
+              
+              ? 
+            
+                <ListItem key={'Configurations'} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                        <Settings />
+                    </ListItemIcon>
+                    <a href="/dash/settings" className="menuLink"> Configurations </a>
+                    {/* <ListItemText primary={'Configurations'} /> */}
+                  </ListItemButton>
+                </ListItem>
+                // <Divider />
+            
+              : ''
+            
+            }
+          
+            
+            
             <ListItem key={'Profile'} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
