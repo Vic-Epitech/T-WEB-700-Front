@@ -110,13 +110,10 @@ function Home(){
 
     };
   
-    const removeToFavoriteCrypto = async(crypto) => {
+  const removeToFavoriteCrypto = async (crypto) => {
       
-      const fav = {
-          "cryptoname": crypto.name,
-          "username": userData.username
-      }
-
+    console.log(crypto);
+      
      let config = {
        headers: {
          'Authorization': 'Bearer ' + token
@@ -125,7 +122,7 @@ function Home(){
 
      try {
 
-       const response = await axios.delete( baseUrl + 'users/deletecrypto', fav, config);
+       const response = await axios.delete( baseUrl + `users/deletecrypto?username=${userData.username}&cryptoname=${crypto.name}`, config);
 
        if(response) {
         // eslint-disable-next-line no-restricted-globals

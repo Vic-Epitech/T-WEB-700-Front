@@ -102,11 +102,6 @@ export default function Cryptos() {
   
     const removeToFavoriteCrypto = async(crypto) => {
       
-      const fav = {
-          "cryptoname": crypto.name,
-          "username": userData.username
-      }
-
      let config = {
        headers: {
          'Authorization': 'Bearer ' + token
@@ -115,7 +110,7 @@ export default function Cryptos() {
 
      try {
 
-       const response = await axios.delete( baseUrl + 'users/deletecrypto', fav, config);
+       const response = await axios.delete( baseUrl + `users/deletecrypto?username=${userData.username}&cryptoname=${crypto.id}`, config);
 
        if(response) {
         // eslint-disable-next-line no-restricted-globals
