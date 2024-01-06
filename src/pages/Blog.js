@@ -4,6 +4,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from "../utils/utils"
+import { useNavigate } from "react-router-dom";
 
 function Blog(){
 
@@ -11,6 +12,8 @@ function Blog(){
     let totalPosts = undefined;
     const [loader, setLoader] = useState(true);
     
+    const navigate = useNavigate();
+
     const navigateToLogin = () => {
       navigate('/auth/login');
     };

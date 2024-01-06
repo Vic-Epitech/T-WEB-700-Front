@@ -17,9 +17,6 @@ import Paper from '@mui/material/Paper';
 import Joyride, { CallBackProps, STATUS, Step } from 'react-joyride';
 import { useMount, useSetState } from 'react-use';
 
-// function getArticles () {
-
-// }
 
 import a11yChecker from 'a11y-checker';
 
@@ -33,20 +30,12 @@ function Home(){
     const [cryptoloader, setCryptoLoader] = useState(true);
 
     const [page] = useState(1);
-    
-    const [maxArticle, setMaxArticle] = useState();
-    const [maxCrypto, setMaxCrypto] = useState();
 
   useEffect(() => {
-      
-    
-
+         
         fetch( baseUrl + 'anonym?identifier=Value1')
         .then((response) => response.json())
         .then((data) => {
-            console.log(data.data);
-            // setMaxArticle(data.data.maxArticleView); 
-            // setMaxCrypto(data.data.maxCryptView); 
             setLoader(true);
             getArticles(3);
             getCryptos(data.data.maxCryptView);
@@ -185,7 +174,6 @@ function Home(){
        fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${numb}&page=1`)
           .then((response) => response.json())
           .then((data) => {
-            //  console.log(data);
              setPosts(data.data);
              setLoader(false);
           })
@@ -200,7 +188,6 @@ function Home(){
        fetch( baseUrl +  `cryptos/cryptosbypage?q=bitcoin&Numb=${numb}&page=1`)
        .then((response) => response.json())
        .then((data) => {
-          console.log(data);
           setCryptos(data.data);
           setCryptoLoader(false);
        })

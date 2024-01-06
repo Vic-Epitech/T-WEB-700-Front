@@ -12,11 +12,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useNavigate } from "react-router-dom";
 
 function Crypto(){
 
     const [cryptos, setCryptos] = useState([]);
     const [cryptoloader, setCryptoLoader] = useState(true);
+
+    const navigate = useNavigate();
     
     const navigateToLogin = () => {
       navigate('/auth/login');
