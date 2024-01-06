@@ -10,67 +10,84 @@ function Blog(){
     const [posts, setPosts] = useState([]);
     let totalPosts = undefined;
     const [loader, setLoader] = useState(true);
-    const [page, setPage] = useState(1);
+    
+    const navigateToLogin = () => {
+      navigate('/auth/login');
+    };
 
     useEffect(() => {
+              
+        setLoader(true);
 
-       setLoader(true);
+        fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+            
+            const _maxArticle = data.data.maxArticleView;
 
-       fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
-          .then((response) => response.json())
-          .then((data) => {
-             console.log(data);
-             totalPosts = data.data;
-             setPosts(totalPosts);
-            //  setPosts(totalPosts['page' + actualPage]);
-            //  console.log(posts);
+            sessionStorage.setItem('maxArticle', _maxArticle);
+            sessionStorage.setItem('page', 1);
 
-            setLoader(false);
-            //  console.log(loader);
-          })
-          .catch((err) => {
-             console.log(err.message);
-          });
+            setTimeout(() => {
+                loadArticles();
+            }, 500);
+
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+        
     }, []);
   
-    const loadMoreArticles = () => {
-        
-        setPage(page + 1);
-        
-        setLoader(true);
+    const loadArticles = () => {
 
-        fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(posts);
-            console.log(data.data);
-            console.log(posts.contat(data.data));
-             setPosts(posts.contat(data.data));
-             setLoader(false);
-          })
-          .catch((err) => {
-             console.log(err.message);
-          });
+                fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        totalPosts = data.data;
+                        setPosts(totalPosts);
+                        setLoader(false);
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+
+    };
+  
+    const changePage = () => {
+              
+        sessionStorage.setItem('page', parseInt(sessionStorage.getItem('page')) + 1);
+
+    };
+  
+    const loadMoreArticles = () => {
 
       if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
-        
-        setPage(page + 1);
+                      
+        changePage()
         
         setLoader(true);
 
-        fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=9&page=' + page)
-          .then((response) => response.json())
-          .then((data) => {
-            console.log(data.data);
-             setPosts(posts.contat(data.data));
-             setLoader(false);
-          })
-          .catch((err) => {
-             console.log(err.message);
-          });
+          setTimeout(() => {
+                        
+            fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setPosts([...posts, ...data.data]);
+                    setLoader(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+
+        }, 100);
 
       }
       else {
+          
+          navigateToLogin();
 
       }
 
@@ -105,9 +122,9 @@ function Blog(){
 
                             <div className="row  gx-5">
 
-                                {posts?.map((post) => {
+                                {posts?.map((post, index) => {
                                     return (
-                                        <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank" rel="noreferrer">
+                                        <a className="col-12 col-md-4" key={ post.title + index } href={ post.url } target="_blank" rel="noreferrer">
 
                                             <div className="article">
 
