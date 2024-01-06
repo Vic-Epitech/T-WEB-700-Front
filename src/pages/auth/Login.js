@@ -57,6 +57,45 @@ function Login(){
             setLoading(false);
           }
     };
+  
+    const handleLoginWithGoogle = async (data) => {
+
+        const log = {
+            "email": data.email,
+            "lastname": data.family_name,
+            "firstname": data.given_name,
+            "username": `${data.given_name}_${data.family_name}`
+        }
+
+        console.log(log)
+        
+        try {
+              
+            setLoading(true);
+            const response = await axios.post( baseUrl + 'api/auth/google/login', log);
+            console.log(response.data); // Handle successful login
+
+            if(response.data.data) {
+
+                // console.log('Success');
+                localStorage.setItem(corisXUserToken, response.data.data.token);
+                localStorage.setItem(corisXUserDatas, JSON.stringify(response.data.data.userData));
+
+                setTimeout(() => {
+                    navigateToDash();
+                }, 200);
+
+            }
+            else {
+                setError(true);
+            }
+
+          } catch (error) {
+            console.error('Login failed', error);
+          } finally {
+            setLoading(false);
+          }
+    };
 
     const responseMessage = (response) => {
         console.log(response);
@@ -71,7 +110,7 @@ function Login(){
             })
             .then((res) => {
                 // setProfile(res.data);
-                console.log(res.data);
+                // console.log(res.data);
             })
             .catch((err) => console.log(err));
         }
@@ -97,6 +136,9 @@ function Login(){
             .then((res) => {
                 // setProfile(res.data);
                 console.log(res.data);
+
+                handleLoginWithGoogle(res.data);
+
             })
             .catch((err) => console.log(err));
         },
