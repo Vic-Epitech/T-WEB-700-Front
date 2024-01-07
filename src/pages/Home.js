@@ -297,9 +297,9 @@ function Home(){
 
                     <div className="step__1">
 
-                        {/* <coingecko-coin-converter-widget coin-id="bitcoin" currency="usd"
+                        <coingecko-coin-converter-widget coin-id="bitcoin" currency="usd"
                             background-color="#ffffff" font-color="#4c4c4c" locale="fr">
-                        </coingecko-coin-converter-widget> */}
+                        </coingecko-coin-converter-widget>
 
                     </div>
 
@@ -307,7 +307,7 @@ function Home(){
 
                 <div className="main_container step__2" style={{ marginTop: "1rem" }}>
 
-                    {/* {
+                    {
                                                 
                       userData?.favCryptos?.length > 0
                                                 
@@ -323,7 +323,7 @@ function Home(){
                         currency="usd" background-color="#ffffff" locale="fr">
                       </coingecko-coin-price-marquee-widget>
 
-                    } */}
+                    }
                           
 
                 </div>
