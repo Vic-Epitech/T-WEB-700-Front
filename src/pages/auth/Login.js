@@ -10,8 +10,8 @@ import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
 function Login(){
 
-    const [email, setUsername] = useState("JohnDoex@example.com");
-    const [password, setPassword] = useState("securepassword");
+    const [email, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
 
