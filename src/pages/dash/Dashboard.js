@@ -31,6 +31,7 @@ export default function Dashboard() {
   const token = localStorage.getItem(corisXUserToken)
 
   const [stats, setStats] = useState([]);
+  const [keywordstats, setkeywordstats] = useState([]);
 
   const [users, setUsers] = useState([]);
   const [loadingUser, setloadingUser] = useState(true);
@@ -101,6 +102,16 @@ export default function Dashboard() {
         .then((response) => response.json())
         .then((data) => {
           setStats(data.data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+      
+     fetch( baseUrl + 'users/keywordsstats/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setkeywordstats(data.data);
         })
         .catch((err) => {
            console.log(err);
@@ -185,6 +196,8 @@ export default function Dashboard() {
 
                                 <div className="col-12 col-md-6">
 
+                                        <span className="mml-3">Crypto mis en favoris par les utilisateurs</span>
+                                    
                                             <PieChart
                                               series={[
                                                 {
@@ -206,14 +219,12 @@ export default function Dashboard() {
 
                                 <div className="col-12 col-md-6">
 
+                                        <span className="mml-3">Mots clés de presse review par les utilisateurs</span>
+
                                             <PieChart
                                               series={[
                                                 {
-                                                  data: [
-                                                    { id: 0, value: 10, label: "series A" },
-                                                    { id: 1, value: 15, label: "series B" },
-                                                    { id: 2, value: 20, label: "series C" },
-                                                  ],
+                                                  data: keywordstats,
                                                   innerRadius: 20,
                                                   outerRadius: 100,
                                                   paddingAngle: 5,
