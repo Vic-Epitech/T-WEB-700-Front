@@ -202,16 +202,16 @@ function Crypto(){
                         {/* <input className="search" placeholder="Besoin de vous documenter, allez-y...."/>  */}
 
                     </div>
-
+{/* 
                     <coingecko-coin-converter-widget coin-id="bitcoin" currency="usd"
                         background-color="#ffffff" font-color="#4c4c4c" locale="fr">
-                    </coingecko-coin-converter-widget>
+                    </coingecko-coin-converter-widget> */}
 
                 </div>
 
                 <div className="main_container" style={{ marginTop: "1rem" }}>
 
-                    {
+                    {/* {
                                                 
                       userData.favCryptos?.length > 0
                                                 
@@ -227,7 +227,7 @@ function Crypto(){
                         currency="usd" background-color="#ffffff" locale="fr">
                       </coingecko-coin-price-marquee-widget>
 
-                    }
+                    } */}
 
                 </div>
 

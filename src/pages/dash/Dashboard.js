@@ -254,7 +254,7 @@ export default function Dashboard() {
                 
                   <h3>Le cours de vos cryptos favorite</h3>
 
-                  {
+                  {/* {
                                                 
                       userData.favCryptos?.length > 0
                                                 
@@ -272,7 +272,7 @@ export default function Dashboard() {
 
                   }
         
-        
+         */}
                   <h3>Mes Cryptos favorite</h3>
 
                         <div className="latest_articles  step__4">
