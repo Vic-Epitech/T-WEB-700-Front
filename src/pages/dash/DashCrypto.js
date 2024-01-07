@@ -81,7 +81,7 @@ export default function Cryptos() {
 
      try {
 
-        const response = await axios.delete(baseUrl + `users/delcrypto?cryptoName=${crypto.name}`, config);
+        const response = await axios.delete(baseUrl + `cryptos/delcrypto?cryptoName=${crypto.id}`, config);
 
        if(response) {
         console.log(response);
