@@ -128,15 +128,15 @@ export default function Dashboard() {
         });
 
 
-     fetch( baseUrl + 'cryptos/', config)
-        .then((response) => response.json())
-        .then((data) => {
-          setCryptosExisted(data.data);
-          setCryptocryptosExistedloader(false);
-        })
-        .catch((err) => {
-           console.log(err);
-        });
+    //  fetch( baseUrl + 'cryptos/', config)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setCryptosExisted(data.data);
+    //       setCryptocryptosExistedloader(false);
+    //     })
+    //     .catch((err) => {
+    //        console.log(err);
+    //     });
 
 
      fetch( baseUrl + 'cryptosfiltinfos/', config)
@@ -176,13 +176,13 @@ export default function Dashboard() {
                 <h3>{users?.length > 0 && !loadingUser ? users?.length : '--' }</h3>
               </div>
 
-              <div className="col-12 col-md-4">
+              {/* <div className="col-12 col-md-4">
                 <span>Cryptos Total</span>
                 <h3>{cryptosExisted?.length > 0 && !cryptosExistedloader ? cryptosExisted?.length : '--' }</h3>
-              </div>
+              </div> */}
 
               <div className="col-12 col-md-4">
-                <span>Nos Cryptos</span>
+                <span>Nos Cryptos Total</span>
                 <h3>{ourcryptosExisted?.length > 0 && !ourcryptosExistedloader ? ourcryptosExisted?.length : '--' }</h3>
               </div>
 
