@@ -8,7 +8,9 @@ import React, { useEffect, useState } from "react";
 import './dash.css';
 import reduceText, { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
 import { Navigate } from "react-router-dom";
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Paper, StyledEngineProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+// import { PieChart } from "@mui/icons-material";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const drawerWidth = 240;
 
@@ -17,6 +19,7 @@ export default function Dashboard() {
 
 
   const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
+
   const [posts, setPosts] = useState([]);
   let totalPosts = undefined;
   const [loader, setLoader] = useState(true);
@@ -27,6 +30,16 @@ export default function Dashboard() {
 
   const token = localStorage.getItem(corisXUserToken)
 
+  const [stats, setStats] = useState([]);
+
+  const [users, setUsers] = useState([]);
+  const [loadingUser, setloadingUser] = useState(true);
+
+  const [cryptosExisted, setCryptosExisted] = useState([]);
+  const [cryptosExistedloader, setCryptocryptosExistedloader] = useState(true);
+
+  const [ourcryptosExisted, setourCryptosExisted] = useState([]);
+  const [ourcryptosExistedloader, setourCryptocryptosExistedloader] = useState(true);
 
   const logout = () => {
     localStorage.removeItem(corisXUserDatas)
@@ -80,13 +93,152 @@ export default function Dashboard() {
         .catch((err) => {
            console.log(err.message);
         });
+
+    
+    if(userData.role === 'admin') {
+      
+     fetch( baseUrl + 'users/favstats/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setStats(data.data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+     fetch( baseUrl + 'users/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setUsers(data.data);
+          setloadingUser(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+
+
+     fetch( baseUrl + 'cryptos/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setCryptosExisted(data.data);
+          setCryptocryptosExistedloader(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+
+
+     fetch( baseUrl + 'cryptosfiltinfos/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setourCryptosExisted(data.data);
+          setourCryptocryptosExistedloader(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+    }
     
   }, []);
 
   return (
         
     <>
+
+      
+      {
         
+        userData.role === 'admin'
+        
+        ?
+          
+          
+        <div className="latest_articles">
+                
+            <h3 className="mmb-1">Statistiques</h3>
+            
+            <div className="row gx-5 mml-2">
+
+              <div className="col-12 col-md-4">
+                <span>Nombre d'Utilisateurs</span>
+                <h3>{users?.length > 0 && !loadingUser ? users?.length : '--' }</h3>
+              </div>
+
+              <div className="col-12 col-md-4">
+                <span>Cryptos Total</span>
+                <h3>{cryptosExisted?.length > 0 && !cryptosExistedloader ? cryptosExisted?.length : '--' }</h3>
+              </div>
+
+              <div className="col-12 col-md-4">
+                <span>Nos Cryptos</span>
+                <h3>{ourcryptosExisted?.length > 0 && !ourcryptosExistedloader ? ourcryptosExisted?.length : '--' }</h3>
+              </div>
+
+            </div>
+                
+            <h3 className="mmb-1"></h3>
+
+            <StyledEngineProvider injectFirst>
+              
+                <div className="row gx-5">
+
+                                <div className="col-12 col-md-6">
+
+                                            <PieChart
+                                              series={[
+                                                {
+                                                  data: stats,
+                                                  innerRadius: 20,
+                                                  outerRadius: 100,
+                                                  paddingAngle: 5,
+                                                  cornerRadius: 5,
+                                                  startAngle: -90,
+                                                  highlightScope: { faded: "global", highlighted: "item" },
+                                                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                                                },
+                                              ]}
+                                              width={500}
+                                              height={300}
+                                            />
+
+                                </div>
+
+                                <div className="col-12 col-md-6">
+
+                                            <PieChart
+                                              series={[
+                                                {
+                                                  data: [
+                                                    { id: 0, value: 10, label: "series A" },
+                                                    { id: 1, value: 15, label: "series B" },
+                                                    { id: 2, value: 20, label: "series C" },
+                                                  ],
+                                                  innerRadius: 20,
+                                                  outerRadius: 100,
+                                                  paddingAngle: 5,
+                                                  cornerRadius: 5,
+                                                  startAngle: -90,
+                                                  highlightScope: { faded: "global", highlighted: "item" },
+                                                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                                                },
+                                              ]}
+                                              width={500}
+                                              height={300}
+                                            />
+
+                                </div>
+
+                </div>
+          
+            </StyledEngineProvider>
+        
+        </div>
+        
+          
+        :
+      
+          
         <div className="main_container dashContainer" style={{ marginTop: "1rem" }}>
                 
                   <h3>Le cours de vos cryptos favorite</h3>
@@ -107,7 +259,7 @@ export default function Dashboard() {
                         currency="usd" background-color="#ffffff" locale="fr">
                       </coingecko-coin-price-marquee-widget>
 
-        }
+                  }
         
         
                   <h3>Mes Cryptos favorite</h3>
@@ -132,29 +284,31 @@ export default function Dashboard() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {cryptos?.map((row) => (
+                                  
+                                    {
+                                      cryptos?.map((row) => (
                                       
-                                    <TableRow
-                                    key={row.name}
-                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
-                                        <TableCell align="left" scope="row">
-                                            <img className="coin_logo" src={row.image} alt="Logo" />
-                                            <span>{row.name} </span>
-                                            ( <span>{capitalize(row.symbol) }</span> )
-                                        </TableCell>
-                                        <TableCell align="right" className="step__5">${row.current_price}</TableCell>
-                                        <TableCell align="right" className="step__6">${row.low_24h} / ${row.high_24h}</TableCell>
-                                        <TableCell align="right">{row.market_cap}</TableCell>
-                                        <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
-                                        <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
-                                        <TableCell align="right" scope="row">
+                                      <TableRow
+                                      key={row.name}
+                                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                      >
+                                          <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
+                                          <TableCell align="left" scope="row">
+                                              <img className="coin_logo" src={row.image} alt="Logo" />
+                                              <span>{row.name} </span>
+                                              ( <span>{capitalize(row.symbol) }</span> )
+                                          </TableCell>
+                                          <TableCell align="right" className="step__5">${row.current_price}</TableCell>
+                                          <TableCell align="right" className="step__6">${row.low_24h} / ${row.high_24h}</TableCell>
+                                          <TableCell align="right">{row.market_cap}</TableCell>
+                                          <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                          <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                          <TableCell align="right" scope="row">
 
-                                                                              
-                                        </TableCell>
+                                                                                
+                                          </TableCell>
 
-                                    </TableRow>
+                                      </TableRow>
                                       
                                     ))}
                     
@@ -164,9 +318,16 @@ export default function Dashboard() {
                             
                             </TableContainer>
 
-                            { loadingCryptos
-                            ? <h2 className="text-center" >Chargement....</h2>
-                            : ''
+                            {
+                              loadingCryptos && userData.favCryptos?.length > 0 
+                              ? <h2 className="text-center" >Chargement....</h2>
+                              : ''
+                            }
+
+                            {
+                              ! userData.favCryptos?.length > 0 
+                              ? <h2 className="text-center" >Vous n'avez pas de crypto en favoris</h2>
+                              : ''
                             }
 
                         </div>
@@ -202,8 +363,13 @@ export default function Dashboard() {
                               );
                           })}
 
-                          { loader
+                          { loader && userData.keywords?.length > 0 
                             ? <h2 className="text-center" >Chargement....</h2>
+                            : ''
+                          }
+
+                          { ! userData.keywords?.length > 0 
+                            ? <h2 className="text-center" >Vous n'avez pas de mot clé pour votre presse review</h2>
                             : ''
                           }
 
@@ -213,7 +379,15 @@ export default function Dashboard() {
 
 
 
-                </div>
+        </div>
+        
+
+      }
+      
+        
+      
+        
+        
 
     </>
 
