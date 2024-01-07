@@ -70,37 +70,8 @@ export default function Cryptos() {
         });
         
     }, []);
-
-    const addToFavoriteCrypto = async(crypto) => {
-      
-      const fav = {
-          "symbol": crypto.id,
-          "cryptoname": crypto.name,
-          "username": userData.username
-      }
-
-     let config = {
-       headers: {
-         'Authorization': 'Bearer ' + token
-       }
-     }
-
-     try {
-
-       const response = await axios.post( baseUrl + 'users/addcrypto', fav, config);
-
-       if(response) {
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
-       }
-
-     } catch (error) {
-     } finally {
-     }
-
-    };
   
-    const removeToFavoriteCrypto = async(crypto) => {
+    const removeCrypto = async(crypto) => {
       
      let config = {
        headers: {
@@ -110,9 +81,10 @@ export default function Cryptos() {
 
      try {
 
-       const response = await axios.delete( baseUrl + `users/deletecrypto?username=${userData.username}&cryptoname=${crypto.id}`, config);
+        const response = await axios.delete(baseUrl + `users/delcrypto?cryptoName=${crypto.name}`, config);
 
        if(response) {
+        console.log(response);
         // eslint-disable-next-line no-restricted-globals
         location.reload();
        }
@@ -125,10 +97,7 @@ export default function Cryptos() {
   
     const loadCryptos = () => {
 
-        // https://countofmoney.giize.com/cryptos/getsavedcryptos
-
-                // fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
-                fetch( baseUrl + `cryptos/cryptosfiltinfos&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                fetch( baseUrl + `cryptos/cryptosfiltinfos?Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data);
@@ -253,7 +222,7 @@ export default function Cryptos() {
                                         <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                         <TableCell align="right" scope="row">
 
-                                                <IconButton onClick={ () => removeToFavoriteCrypto(row)} color="secondary" title="Retirer des Favoris">
+                                                <IconButton onClick={ () => removeCrypto(row)} color="secondary" title="Retirer des Favoris">
                                                   <Delete />
                                                 </IconButton>
 
