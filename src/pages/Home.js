@@ -218,7 +218,7 @@ function Home(){
   
     const getCryptos = (numb) => {          
 
-       fetch( baseUrl +  `cryptos/cryptosbypage?q=bitcoin&Numb=${numb}&page=1`)
+       fetch( baseUrl +  `cryptos/cryptosfiltinfos?q=bitcoin&Numb=${numb}&page=1`)
        .then((response) => response.json())
        .then((data) => {
           setCryptos(data.data);

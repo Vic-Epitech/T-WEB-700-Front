@@ -125,7 +125,10 @@ export default function Cryptos() {
   
     const loadCryptos = () => {
 
-                fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+        // https://countofmoney.giize.com/cryptos/getsavedcryptos
+
+                // fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                fetch( baseUrl + `cryptos/cryptosfiltinfos&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data);
@@ -180,15 +183,13 @@ export default function Cryptos() {
     
     <>
     
-      <div className="">
+      {/* <div className="">
 
         <div className="main_container header search_bar" style={{ marginTop: "1rem" }}>
 
             <div style={{ width: "fit-content" }}>
 
             <h1>Market - Faites vos achat</h1>
-
-                {/* <input className="search" placeholder="Besoin de vous documenter, allez-y...."/>  */}
 
             </div>
 
@@ -206,7 +207,7 @@ export default function Cryptos() {
 
         </div>
 
-      </div>
+      </div> */}
 
       <div className="body">
 
@@ -252,7 +253,11 @@ export default function Cryptos() {
                                         <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                         <TableCell align="right" scope="row">
 
-                                          {
+                                                <IconButton onClick={ () => removeToFavoriteCrypto(row)} color="secondary" title="Retirer des Favoris">
+                                                  <Delete />
+                                                </IconButton>
+
+                                          {/* {
                                             userData
                                             
                                             ? 
@@ -282,7 +287,7 @@ export default function Cryptos() {
 
                                             : ''
 
-                                          }
+                                          } */}
                                                                                    
                                         </TableCell>
 

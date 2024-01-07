@@ -82,7 +82,7 @@ function Crypto(){
   
     const loadCryptos = () => {
 
-                fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+                fetch( baseUrl + `cryptos/cryptosfiltinfos?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
                     .then((response) => response.json())
                     .then((data) => {
                         console.log(data);
@@ -111,7 +111,7 @@ function Crypto(){
 
           setTimeout(() => {
                         
-            fetch( baseUrl + `cryptos/cryptosbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
+            fetch( baseUrl + `cryptos/cryptosfiltinfos?q=bitcoin&Numb=${sessionStorage.getItem('maxCryptos')}&page=${sessionStorage.getItem('page')}`)
                 .then((response) => response.json())
                 .then((data) => {
                     console.log(data);
