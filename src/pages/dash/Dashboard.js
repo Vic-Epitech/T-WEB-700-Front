@@ -284,7 +284,7 @@ export default function Dashboard() {
                                     <TableRow>
                                         <TableCell align="left">#</TableCell>
                                         <TableCell align="left">Nom</TableCell>
-                                        <TableCell align="right">Prix($)</TableCell>
+                                        <TableCell align="right">Prix(€)</TableCell>
                                         <TableCell align="right">Min / Max (24h)</TableCell>
                                         {/* <TableCell align="right">24h %</TableCell>
                                         <TableCell align="right">7d %</TableCell> */}
@@ -309,8 +309,8 @@ export default function Dashboard() {
                                               <span>{row.name} </span>
                                               ( <span>{capitalize(row.symbol) }</span> )
                                           </TableCell>
-                                          <TableCell align="right" className="step__5">${row.current_price}</TableCell>
-                                          <TableCell align="right" className="step__6">${row.low_24h} / ${row.high_24h}</TableCell>
+                                          <TableCell align="right" className="step__5">€{row.current_price}</TableCell>
+                                          <TableCell align="right" className="step__6">€{row.low_24h} / €{row.high_24h}</TableCell>
                                           <TableCell align="right">{row.market_cap}</TableCell>
                                           <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                           <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
