@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import reduceText, { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from "../utils/utils"
+import reduceText, { baseUrl, capitalize, corisXUserDatas } from "../utils/utils"
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -21,7 +21,6 @@ import { useMount, useSetState } from 'react-use';
 import a11yChecker from 'a11y-checker';
 import { IconButton } from "@mui/material";
 import { Delete, Favorite } from "@mui/icons-material";
-import axios from "axios";
 
 
 function Home(){
@@ -34,38 +33,9 @@ function Home(){
 
     const [page] = useState(1);
     
-    const [userData, setUserData] = useState(JSON.parse(localStorage.getItem(corisXUserDatas)));
-  
-    const token = localStorage.getItem(corisXUserToken)
+    const userData = JSON.parse(localStorage.getItem(corisXUserDatas))
 
-  useEffect(() => {
-      
-    console.log(userData)
-
-    
-     let config = {
-       headers: {
-         'Authorization': 'Bearer ' + token
-       }
-     }
-
-    if (userData) {
-    
-     fetch( baseUrl + 'users/user?username=' + userData.username , config)
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          // console.log(userData.favCryptos?.filter((crypt) => crypt.symbol === 'bitcoin'))
-          setUserData(data.data)
-          localStorage.setItem(corisXUserDatas, JSON.stringify(data.data));
-          // console.log(userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )))
-          // console.log(userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join(''))
-        })
-        .catch((err) => {
-           console.log(err);
-        });
-       
-     } 
+    useEffect(() => {
          
         fetch( baseUrl + 'anonym?identifier=Value1')
         .then((response) => response.json())
@@ -80,62 +50,9 @@ function Home(){
 
 
     }, []);
-  
-    const addToFavoriteCrypto = async(crypto) => {
-      
-      const fav = {
-          "symbol": crypto.id,
-          "cryptoname": crypto.name,
-          "username": userData.username
-      }
-
-     let config = {
-       headers: {
-         'Authorization': 'Bearer ' + token
-       }
-     }
-
-     try {
-
-       const response = await axios.post( baseUrl + 'users/addcrypto', fav, config);
-
-       if(response) {
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
-       }
-
-     } catch (error) {
-     } finally {
-     }
-
-    };
-  
-  const removeToFavoriteCrypto = async (crypto) => {
-      
-    console.log(crypto);
-      
-     let config = {
-       headers: {
-         'Authorization': 'Bearer ' + token
-       }
-     }
-
-     try {
-
-       const response = await axios.delete( baseUrl + `users/deletecrypto?username=${userData.username}&cryptoname=${crypto.name}`, config);
-
-       if(response) {
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
-       }
-
-     } catch (error) {
-     } finally {
-     }
-      
-    };
 
     // guided tour
+
     const [{ run, steps }, setState] = useSetState({
       run: true,
       steps: [
@@ -218,7 +135,7 @@ function Home(){
   
     const getCryptos = (numb) => {          
 
-       fetch( baseUrl +  `cryptos/cryptosfiltinfos?Numb=${numb}&page=1`)
+       fetch( baseUrl +  `cryptos/cryptosbypage?q=bitcoin&Numb=${numb}&page=1`)
        .then((response) => response.json())
        .then((data) => {
           setCryptos(data.data);
@@ -307,24 +224,9 @@ function Home(){
 
                 <div className="main_container step__2" style={{ marginTop: "1rem" }}>
 
-                    {
-                                                
-                      userData?.favCryptos?.length > 0
-                                                
-                      ?
-                                                  
-                      <coingecko-coin-price-marquee-widget coin-ids={userData?.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData?.favCryptos?.length - 1 ? '' : ','}` )).join('')}
+                    <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
                         currency="usd" background-color="#ffffff" locale="fr">
-                      </coingecko-coin-price-marquee-widget>
-                                 
-                      : 
-                                                  
-                      <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
-                        currency="usd" background-color="#ffffff" locale="fr">
-                      </coingecko-coin-price-marquee-widget>
-
-                    }
-                          
+                    </coingecko-coin-price-marquee-widget>
 
                 </div>
 
@@ -391,7 +293,6 @@ function Home(){
                         <div className="latest_articles  step__4">
                             
                             <TableContainer component={Paper}>
-                              
                             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                                 <TableHead>
                                     <TableRow>
@@ -404,24 +305,11 @@ function Home(){
                                         <TableCell align="right">Cap du Marché</TableCell>
                                         <TableCell align="right">Max d'approvisionnement</TableCell>
                                         <TableCell align="right">Volume Total</TableCell>
-
-                                        {
-                                            userData
-                                            
-                                            ? 
-
-                                            <TableCell align="right">Actions</TableCell>
-
-                                            : ''
-
-                                        }
-                      
-                                        
+                                        <TableCell align="right">Actions</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {cryptos?.map((row) => (
-                                      
                                     <TableRow
                                     key={row.name}
                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -434,53 +322,27 @@ function Home(){
                                         </TableCell>
                                         <TableCell align="right" className="step__5">€{row.current_price}</TableCell>
                                         <TableCell align="right" className="step__6">€{row.low_24h} / €{row.high_24h}</TableCell>
+                                        {/* <TableCell align="right">{row.calories}</TableCell>
+                                        <TableCell align="right">{row.calories}</TableCell> */}
                                         <TableCell align="right">{row.market_cap}</TableCell>
                                         <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                         <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
                                         <TableCell align="right" scope="row">
-
-                                          {
-                                            userData
                                             
-                                            ? 
-
                                             <div className="d-flex">
-
-                                              {
-                                                
-                                                userData?.favCryptos?.filter((crypt) => crypt.symbol === row.id).length > 0
-                                                
-                                                ?
-                                                  
-                                                <IconButton onClick={ () => removeToFavoriteCrypto(row)} color="secondary" title="Retirer des Favoris">
-                                                  <Delete />
-                                                </IconButton>
-                                 
-                                                : 
-                                                  
-                                                <IconButton onClick={ () => addToFavoriteCrypto(row)} color="warning" title="Ajouter en favoris">
+                                                <IconButton color="success" aria-label="add an alarm">
                                                     <Favorite />
                                                 </IconButton>
-
-                                              }
-                                                
-                                                
+                                                <IconButton color="secondary" aria-label="add to shopping cart">
+                                                    <Delete />
+                                                </IconButton>
                                             </div>
-
-                                            : ''
-
-                                          }
-                                                                                   
+                                          
                                         </TableCell>
-
                                     </TableRow>
-                                      
                                     ))}
-                    
                                 </TableBody>
-                                
                             </Table>
-                            
                             </TableContainer>
 
                             { cryptoloader

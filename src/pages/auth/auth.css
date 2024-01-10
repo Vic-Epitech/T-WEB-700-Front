@@ -26,17 +26,23 @@
     display: flex;
     padding: 5px;
     background-color: aliceblue;
-    border-radius: 40px;
+    border-radius: 6px;
+    color: #000;
   }
   
   .social_login a img{
-    width: 40px;
-    height: 40px;
+    width: 25px;
+    height: 25px;
+    margin-left: 1rem;
   }
   
   .social_login a h3{
     width: 68%;
     text-align: center;
+  }
+  
+  .social_login a h6{
+    margin: 0;
   }
 
   .form_login input, .form_login select{
@@ -47,6 +53,11 @@
     border: none;
     border-radius: 6px;
     border-bottom: 4px solid #b2c998;
+  }
+
+  .error  {
+    text-align: center;
+    color: #ef3e0d;
   }
 
   .auth_acts  {
@@ -72,7 +83,12 @@
     margin-top: 2rem;
     background-color: cornsilk;
     font-weight: 600;
-    font-size: 23px;
+    font-size: 20px;
     line-height: 1;
   }
+
+.social_auth_align {
+  margin: 0 auto;
+  /* padding-left: 4rem; */
+}
 

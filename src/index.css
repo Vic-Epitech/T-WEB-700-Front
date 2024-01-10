@@ -101,6 +101,7 @@ a {
 
 .body .more a {
   font-size: large;
+  cursor: pointer;
 }
 
 .latest_articles {
@@ -121,7 +122,8 @@ a {
 }
 
 .article .article_cover {
-  width: 100%;
+  width: -webkit-fill-available;
+  height: 222px;
   border-radius: 7px;
 }
 
@@ -149,4 +151,8 @@ a {
   font-size: large;
   color: brown;
   font-style: italic;
+}
+
+.d-flex {
+  display: flex;
 }

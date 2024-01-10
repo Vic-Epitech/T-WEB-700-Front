@@ -1,251 +1,406 @@
-import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { DashboardCustomize } from '@mui/icons-material';
-import { Money } from '@mui/icons-material';
-import { Settings } from '@mui/icons-material';
-import { Person } from '@mui/icons-material';
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/jsx-no-target-blank */
+
+import React, { useEffect, useState } from "react";
 
 import './dash.css';
-import { Newspaper } from '@mui/icons-material';
-import { VerifiedUserTwoTone } from '@mui/icons-material';
-import { PowerOff } from '@mui/icons-material';
+import reduceText, { baseUrl, capitalize, corisXUserDatas, corisXUserToken } from '../../utils/utils';
+import { Navigate } from "react-router-dom";
+import { Paper, StyledEngineProvider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+// import { PieChart } from "@mui/icons-material";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const drawerWidth = 240;
 
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
 
 export default function Dashboard() {
 
-  const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const userData = JSON.parse(localStorage.getItem(corisXUserDatas));
+
+  const [posts, setPosts] = useState([]);
+  let totalPosts = undefined;
+  const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+  
+  const [cryptos, setCryptos] = useState([]);
+  const [loadingCryptos, setloadingCryptos] = useState(true);
+
+  const token = localStorage.getItem(corisXUserToken)
+
+  const [stats, setStats] = useState([]);
+  const [keywordstats, setkeywordstats] = useState([]);
+
+  const [users, setUsers] = useState([]);
+  const [loadingUser, setloadingUser] = useState(true);
+
+  const [cryptosExisted, setCryptosExisted] = useState([]);
+  const [cryptosExistedloader, setCryptocryptosExistedloader] = useState(true);
+
+  const [ourcryptosExisted, setourCryptosExisted] = useState([]);
+  const [ourcryptosExistedloader, setourCryptocryptosExistedloader] = useState(true);
+
+  const logout = () => {
+    localStorage.removeItem(corisXUserDatas)
+    localStorage.removeItem(corisXUserToken)
+    // eslint-disable-next-line no-restricted-globals
+    // location.reload();
+    Navigate('');
   };
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  useEffect(() => {
+  
+    if(!userData) {
+      console.log(userData)
+      Navigate('');
+    }
+    
+     let config = {
+       headers: {
+         'Authorization': 'Bearer ' + token
+       }
+     }
 
-  const menuLinks = [
-    {
-        "title": "Dashboard",
-        "icon": "<DashboardCustomize />"
-    },
-    {
-        "title": "Cryptos",
-        "icon": "<Money />"
-    },
-    {
-        "title": "Configurations",
-        "icon": "<Settings />"
-    },
-    {
-        "title": "Profile",
-        "icon": "<Person />"
-    },
-  ]
+
+     setLoader(true);
+
+    // https://countofmoney.giize.com/articles/artmanykeys?keywordslist=gold,bitcoin
+    //  fetch( baseUrl + 'articles/articlesbypage?q=bitcoin&Numb=6&page=' + page)
+
+     fetch( baseUrl + `articles/artmanykeys?keywordslist=${userData.keywords?.map((row, index) => ( `${row}${index === userData.keywords.length - 1 ? '' : ','}` )).join('')}&Numb=6&page=${page}`, config)
+        .then((response) => response.json())
+        .then((data) => {
+           console.log(data);
+           totalPosts = data.data;
+           setPosts(totalPosts);
+
+          setLoader(false);
+          //  console.log(loader);
+        })
+        .catch((err) => {
+           console.log(err.message);
+        });
+    
+    
+     fetch( baseUrl + `cryptos/cryptosmanykeys?keywords=${userData.favCryptos?.map((row, index) => ( `${row.cryptoname}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join('')}`, config)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setCryptos(data.data);
+          setloadingCryptos(false);
+        })
+        .catch((err) => {
+           console.log(err.message);
+        });
+
+    
+    if(userData.role === 'admin') {
+      
+     fetch( baseUrl + 'users/favstats/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setStats(data.data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+      
+     fetch( baseUrl + 'users/keywordsstats/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setkeywordstats(data.data);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+     fetch( baseUrl + 'users/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setUsers(data.data);
+          setloadingUser(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+
+
+    //  fetch( baseUrl + 'cryptos/', config)
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       setCryptosExisted(data.data);
+    //       setCryptocryptosExistedloader(false);
+    //     })
+    //     .catch((err) => {
+    //        console.log(err);
+    //     });
+
+
+     fetch( baseUrl + 'cryptosfiltinfos/', config)
+        .then((response) => response.json())
+        .then((data) => {
+          setourCryptosExisted(data.data);
+          setourCryptocryptosExistedloader(false);
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+      
+    }
+    
+  }, []);
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-           <a href="/" className="menuLink">
-              <img style={{ width: "12rem"}} className="logo" src={"https://firebasestorage.googleapis.com/v0/b/planes-logs.appspot.com/o/long_logo2.png?alt=media&token=53846e2f-22bd-4645-a9f0-340d4454ab38"} alt="Logo" />
-           </a>
-            {/* Count Of Money */}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          '& .MuiDrawer-paper': {
-            width: drawerWidth,
-            boxSizing: 'border-box',
-          },
-        }}
-        variant="persistent"
-        anchor="left"
-        open={open}
-      >
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} color="inherit">
-            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-          </IconButton>
-        </DrawerHeader>
-        <Divider />
-        <List>
-            <ListItem key={'Dashboard'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <DashboardCustomize />
-                </ListItemIcon >
-                <a href="/dash" className="menuLink"> Dashboard </a>
-                {/* <ListItemText primary={'Dashboard'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Cryptos'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Money />
-                </ListItemIcon>
-                <a href="/dash/cryptos" className="menuLink"> Cryptos </a>
-                {/* <ListItemText primary={'Cryptos'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Articles'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Newspaper />
-                </ListItemIcon>
-                <a href="/dash/articles" className="menuLink"> Articles </a>
-                {/* <ListItemText primary={'Articles'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Users'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <VerifiedUserTwoTone />
-                </ListItemIcon>
-                <a href="/dash/users" className="menuLink"> Users </a>
-                {/* <ListItemText primary={'Users'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <ListItem key={'Configurations'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Settings />
-                </ListItemIcon>
-                <a href="/dash/settings" className="menuLink"> Configurations </a>
-                {/* <ListItemText primary={'Configurations'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <Divider />
-            <ListItem key={'Profile'} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                    <Person />
-                </ListItemIcon>
-                <a href="/dash/profile" className="menuLink"> Profile </a>
-                {/* <ListItemText primary={'Profile'} /> */}
-              </ListItemButton>
-            </ListItem>
-            <Divider />
-            <ListItem key={'Déconexion'} disablePadding>
-              <ListItemButton style={{marginTop: "24em"}}>
-                <ListItemIcon>
-                    <PowerOff />
-                </ListItemIcon>
-                <a style={{cursor: "pointer"}} className="menuLink"> Déconexion </a>
-                {/* <ListItemText primary={'Profile'} /> */}
-              </ListItemButton>
-            </ListItem>
-        </List>
-      </Drawer>
-      <Main open={open}>
-        <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-      </Main>
-    </Box>
+        
+    <>
+
+      
+      {
+        
+        userData.role === 'admin'
+        
+        ?
+          
+          
+        <div className="latest_articles">
+                
+            <h3 className="mmb-1">Statistiques</h3>
+            
+            <div className="row gx-5 mml-2">
+
+              <div className="col-12 col-md-4">
+                <span>Nombre d'Utilisateurs</span>
+                <h3>{users?.length > 0 && !loadingUser ? users?.length : '--' }</h3>
+              </div>
+
+              {/* <div className="col-12 col-md-4">
+                <span>Cryptos Total</span>
+                <h3>{cryptosExisted?.length > 0 && !cryptosExistedloader ? cryptosExisted?.length : '--' }</h3>
+              </div> */}
+
+              <div className="col-12 col-md-4">
+                <span>Nos Cryptos Total</span>
+                <h3>{ourcryptosExisted?.length > 0 && !ourcryptosExistedloader ? ourcryptosExisted?.length : '--' }</h3>
+              </div>
+
+            </div>
+                
+            <h3 className="mmb-1"></h3>
+
+            <StyledEngineProvider injectFirst>
+              
+                <div className="row gx-5">
+
+                                <div className="col-12 col-md-6">
+
+                                        <span className="mml-3">Crypto mis en favoris par les utilisateurs</span>
+                                    
+                                            <PieChart
+                                              series={[
+                                                {
+                                                  data: stats,
+                                                  innerRadius: 20,
+                                                  outerRadius: 100,
+                                                  paddingAngle: 5,
+                                                  cornerRadius: 5,
+                                                  startAngle: -90,
+                                                  highlightScope: { faded: "global", highlighted: "item" },
+                                                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                                                },
+                                              ]}
+                                              width={500}
+                                              height={300}
+                                            />
+
+                                </div>
+
+                                <div className="col-12 col-md-6">
+
+                                        <span className="mml-3">Mots clés de presse review par les utilisateurs</span>
+
+                                            <PieChart
+                                              series={[
+                                                {
+                                                  data: keywordstats,
+                                                  innerRadius: 20,
+                                                  outerRadius: 100,
+                                                  paddingAngle: 5,
+                                                  cornerRadius: 5,
+                                                  startAngle: -90,
+                                                  highlightScope: { faded: "global", highlighted: "item" },
+                                                  faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+                                                },
+                                              ]}
+                                              width={500}
+                                              height={300}
+                                            />
+
+                                </div>
+
+                </div>
+          
+            </StyledEngineProvider>
+        
+        </div>
+        
+          
+        :
+      
+          
+        <div className="main_container dashContainer" style={{ marginTop: "1rem" }}>
+                
+                  <h3>Le cours de vos cryptos favorite</h3>
+
+                  {
+                                                
+                      userData.favCryptos?.length > 0
+                                                
+                      ?
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids={userData.favCryptos?.map((row, index) => ( `${row.symbol}${index === userData.favCryptos.length - 1 ? '' : ','}` )).join('')}
+                        currency="usd" background-color="#ffffff" locale="fr">
+                      </coingecko-coin-price-marquee-widget>
+                                 
+                      : 
+                                                  
+                      <coingecko-coin-price-marquee-widget coin-ids="bitcoin,ethereum,eos,ripple,litecoin"
+                        currency="usd" background-color="#ffffff" locale="fr">
+                      </coingecko-coin-price-marquee-widget>
+
+                  }
+        
+        
+                  <h3>Mes Cryptos favorite</h3>
+
+                        <div className="latest_articles  step__4">
+                            
+                            <TableContainer component={Paper}>
+                              
+                            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="left">#</TableCell>
+                                        <TableCell align="left">Nom</TableCell>
+                                        <TableCell align="right">Prix(€)</TableCell>
+                                        <TableCell align="right">Min / Max (24h)</TableCell>
+                                        {/* <TableCell align="right">24h %</TableCell>
+                                        <TableCell align="right">7d %</TableCell> */}
+                                        <TableCell align="right">Cap du Marché</TableCell>
+                                        <TableCell align="right">Max d'approvisionnement</TableCell>
+                                        <TableCell align="right">Volume Total</TableCell>
+                                        
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  
+                                    {
+                                      cryptos?.map((row) => (
+                                      
+                                      <TableRow
+                                      key={row.name}
+                                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                      >
+                                          <TableCell align="left" component="th" scope="row"> { cryptos.indexOf(row) + 1 } </TableCell>
+                                          <TableCell align="left" scope="row">
+                                              <img className="coin_logo" src={row.image} alt="Logo" />
+                                              <span>{row.name} </span>
+                                              ( <span>{capitalize(row.symbol) }</span> )
+                                          </TableCell>
+                                          <TableCell align="right" className="step__5">€{row.current_price}</TableCell>
+                                          <TableCell align="right" className="step__6">€{row.low_24h} / €{row.high_24h}</TableCell>
+                                          <TableCell align="right">{row.market_cap}</TableCell>
+                                          <TableCell align="right" scope="row">{row.max_supply}  ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                          <TableCell align="right" scope="row" className="step__7">{row.total_volume} ( <span>{ capitalize(row.symbol) }</span> )</TableCell>
+                                          <TableCell align="right" scope="row">
+
+                                                                                
+                                          </TableCell>
+
+                                      </TableRow>
+                                      
+                                    ))}
+                    
+                                </TableBody>
+                                
+                            </Table>
+                            
+                            </TableContainer>
+
+                            {
+                              loadingCryptos && userData.favCryptos?.length > 0 
+                              ? <h2 className="text-center" >Chargement....</h2>
+                              : ''
+                            }
+
+                            {
+                              ! userData.favCryptos?.length > 0 
+                              ? <h2 className="text-center" >Vous n'avez pas de crypto en favoris</h2>
+                              : ''
+                            }
+
+                        </div>
+
+                
+                  <h3>Presse Review</h3>
+
+                  <div className="latest_articles">
+
+                      <div className="row  gx-5">
+
+                          {posts?.map((post) => {
+                              return (
+                                  <a className="col-12 col-md-4" key={ post.title } href={ post.url } target="_blank">
+
+                                      <div className="article">
+
+                                          <img className="article_cover" src={ post.urlToImage } alt="cover" />
+
+                                          <div className="article_details">
+
+                                              <h2>{ post.title }</h2>
+
+                                              <h3>{ reduceText(post.description) }</h3>
+
+                                              <h4>Publié le : <span>{ post.publishedAt }</span> </h4>
+
+                                          </div>
+
+                                      </div>
+
+                                  </a>
+                              );
+                          })}
+
+                          { loader && userData.keywords?.length > 0 
+                            ? <h2 className="text-center" >Chargement....</h2>
+                            : ''
+                          }
+
+                          { ! userData.keywords?.length > 0 
+                            ? <h2 className="text-center" >Vous n'avez pas de mot clé pour votre presse review</h2>
+                            : ''
+                          }
+
+                      </div>
+
+                  </div>
+
+
+
+        </div>
+        
+
+      }
+      
+        
+      
+        
+        
+
+    </>
+
   );
 }

@@ -40,3 +40,27 @@
 header {
   background-color: #0c1b41 !important;
 }
+
+.text-center {
+  text-align: center;
+  margin: 4rem 1rem;
+}
+
+thead tr th {
+  font-weight: 700 !important;
+}
+
+
+.table {
+  border: #e8f4da solid !important;
+}
+
+.coin_logo {
+  width: 35px;
+  margin-right: 8px;
+}
+
+.d-flex {
+  margin: 0 auto;
+  display: flex;
+}

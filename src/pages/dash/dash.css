@@ -1,7 +1,7 @@
 .css-1f2xuhi-MuiDrawer-docked .MuiDrawer-paper {
     width: 240px;
     box-sizing: border-box;
-    background-color: #1e397c !important;
+    background-color: #050e33 !important;
     color: #fff;
 }
 
@@ -10,3 +10,73 @@
     margin-top: 5px;
     margin-right: 10px;
 }
+
+.mgl {
+    margin-top: 5px;
+    margin-left: 45rem;
+}
+
+.dashContainer h3{
+    margin-top: 1.5rem;
+    font-size: larger;
+    font-weight: 600;
+}
+
+.profile_logo {
+    width: 19%;
+    border-radius: 50%;
+    border: #050e33 solid 4px;
+    margin-left: 21rem;
+}
+
+.profile_name {
+    font-size: -webkit-xxx-large;
+    font-weight: 600;
+    margin: 8rem 0 0 3rem;
+}
+
+.form_container {
+    padding: 2rem 2rem;
+    background-color: #636d93;
+    margin-top: 2rem;
+    border-radius: 10px;
+}
+
+.form_container h4{
+    font-weight: 700;
+    margin-bottom: 2rem;
+}
+
+.ml-2rem {
+    margin-left: 2rem;
+}
+
+.btn-delete {
+    border: none;
+    background-color: #f58989;
+    padding: 4px 8px;
+    border-radius: 5px;
+}
+
+.tt-l {
+    text-align: center;
+        font-size: larger;
+        font-weight: 600;
+}
+
+
+.css-uoam7u-MuiButtonBase-root-MuiChip-root, .css-18vr5r7-MuiButtonBase-root-MuiChip-root { 
+    width: 100% !important;
+    font-size: larger !important;
+}
+
+.mmb-1 {
+    margin-bottom: 4rem;
+}
+.mml-2 {
+    margin-left: 2rem;
+}
+.mml-3 {
+    margin-left: 3rem;
+}
+

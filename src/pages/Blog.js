@@ -1,8 +1,100 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-undef */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "./Header";
+import reduceText, { baseUrl, corisXUserDatas, corisXUserToken } from "../utils/utils"
+import { useNavigate } from "react-router-dom";
 
 function Blog(){
+
+    const [posts, setPosts] = useState([]);
+    let totalPosts = undefined;
+    const [loader, setLoader] = useState(true);
+    
+    const navigate = useNavigate();
+
+    const navigateToLogin = () => {
+      navigate('/auth/login');
+    };
+
+    useEffect(() => {
+              
+        setLoader(true);
+
+        fetch( baseUrl + 'anonym?identifier=Value1')
+        .then((response) => response.json())
+        .then((data) => {
+            
+            const _maxArticle = data.data.maxArticleView;
+
+            sessionStorage.setItem('maxArticle', _maxArticle);
+            sessionStorage.setItem('page', 1);
+
+            setTimeout(() => {
+                loadArticles();
+            }, 500);
+
+        })
+        .catch((err) => {
+           console.log(err);
+        });
+        
+    }, []);
+  
+    const loadArticles = () => {
+
+                fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log(data);
+                        totalPosts = data.data;
+                        setPosts(totalPosts);
+                        setLoader(false);
+                    })
+                    .catch((err) => {
+                        console.log(err.message);
+                    });
+
+    };
+  
+    const changePage = () => {
+              
+        sessionStorage.setItem('page', parseInt(sessionStorage.getItem('page')) + 1);
+
+    };
+  
+    const loadMoreArticles = () => {
+
+      if(localStorage.getItem(corisXUserToken) && localStorage.getItem(corisXUserDatas)) {
+                      
+        changePage()
+        
+        setLoader(true);
+
+          setTimeout(() => {
+                        
+            fetch( baseUrl + `articles/articlesbypage?q=bitcoin&Numb=${sessionStorage.getItem('maxArticle')}&page=${sessionStorage.getItem('page')}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    setPosts([...posts, ...data.data]);
+                    setLoader(false);
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+
+        }, 100);
+
+      }
+      else {
+          
+          navigateToLogin();
+
+      }
+
+    };
 
     return (
         
@@ -33,192 +125,46 @@ function Blog(){
 
                             <div className="row  gx-5">
 
-                                <a className="col-12 col-md-4" href="#">
+                                {posts?.map((post, index) => {
+                                    return (
+                                        <a className="col-12 col-md-4" key={ post.title + index } href={ post.url } target="_blank" rel="noreferrer">
 
-                                    <div className="article">
+                                            <div className="article">
 
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
+                                                <img className="article_cover" src={ post.urlToImage } alt="cover" />
 
-                                        <div className="article_details">
+                                                <div className="article_details">
 
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
+                                                    <h2>{ post.title }</h2>
 
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
+                                                    <h3>{ reduceText(post.description) }</h3>
 
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
+                                                    <h4>Publié le : <span>{ post.publishedAt }</span> </h4>
 
-                                        </div>
+                                                </div>
 
-                                    </div>
+                                            </div>
 
-                                </a>
+                                        </a>
+                                    );
+                                })}
 
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
-
-                                <a className="col-12 col-md-4" href="#">
-
-                                    <div className="article">
-
-                                        <img className="article_cover" src={"../img/blog/article_1.webp"} alt="cover" />
-
-                                        <div className="article_details">
-
-                                            <h2>Binance lance la série de contenus « La crypto, c’est mieux avec Binance » mettant en avant le parcours</h2>
-
-                                            <h3>Des millions de personnes à travers le monde utilisent la cryptomonnaie chaque jour pour prendre le contrôle de leurs finances, que ce soit pour changer de carrière en Afrique ou pour compenser l’inflation en Asie : chacun a sa propre histoire. </h3>
-
-                                            <h4>Publié le : <span>2023-11-30</span> </h4>
-
-                                        </div>
-
-                                    </div>
-
-                                </a>
+                                { loader
+                                  ? <h2 className="text-center" >Chargement....</h2>
+                                  : ''
+                                }
 
                             </div>
 
                         </div>
 
                         <h2 className="more">
-                            <a href="">Voir plus d'article</a>
+
+                            { !loader
+                            ? <a onClick={loadMoreArticles} >Voir plus d'article</a>
+                            : ''
+                            }
+                            
                         </h2>
 
                     </div>
